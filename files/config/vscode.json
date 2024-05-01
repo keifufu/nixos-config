@@ -1,6 +1,6 @@
 {
   "search.followSymlinks": false,
-  "window.titleBarStyle": "custom",
+  "window.titleBarStyle": "custom", // NOTE: "native" does not cause crashes anymore, however, context menus are ruined if using "native"
   "zenMode.fullScreen": false,
   "keyboard.dispatch": "keyCode", // fixes wrong keyboard shortcut layout
   "editor.codeLens": true,
