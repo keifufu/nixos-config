@@ -1,6 +1,6 @@
 #/usr/bin/env bash
 
-killall .waybar-wrapped
+pkill .waybar-wrapped
 waybar >/dev/null 2>&1 & disown
 hyprctl reload
 # i dont know if restart had issues or if i
