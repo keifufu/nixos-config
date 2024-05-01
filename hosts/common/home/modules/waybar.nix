@@ -10,7 +10,7 @@
 #                   └─ waybar.nix *
 #
 
-{ host, ... }:
+{ host, pkgs, ... }:
 
 let 
   output = with host;
@@ -126,10 +126,12 @@ let
   smooth-scrolling-threshold = with host;
     if hostName == "laptop" then 5
     else 0;
+  waybar = pkgs.callPackage ../../../../pkgs/waybar { };
 in
 {
   programs.waybar = {
     enable = true;
+    package = waybar;
     settings = {
       mainBar = {
         position = "top";
