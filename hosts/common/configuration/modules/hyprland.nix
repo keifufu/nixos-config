@@ -33,25 +33,13 @@
       # WLR_BACKEND = "vulkan";
       # WLR_RENDERER = "vulkan";
 
-      QT_QPA_PLATFORM = "wayland";
+      # QT_QPA_PLATFORM = "wayland"; # defined in hyprland nix flake, set to "wayland;xcb"
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
       NIXOS_OZONE_WL = "1";
       XCURSOR_SIZE = "24";
-      GDK_BACKEND = "wayland";
+      # GDK_BACKEND = "wayland"; # defined in hyprland nix flake, set to "wayland,x11"
       MOZ_ENABLE_WAYLAND = "1";
     };
-    systemPackages = with pkgs; [
-      grim
-      slurp
-      swappy
-      wl-clipboard
-      wtype
-      hyprpicker
-      hyprpaper
-      wlr-randr
-      wf-recorder
-      cliphist
-    ];
   };
 
   security.pam.services.swaylock = {
