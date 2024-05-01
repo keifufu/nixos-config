@@ -30,9 +30,21 @@ elif [ "$operation" == "set" ]; then
     current_brightness=$(cat ~/.brightness 2>/dev/null || echo "0")
     new_brightness=$((current_brightness + input_brightness))
 
-    new_brightness=$((new_brightness < 0 ? 0 : new_brightness))
-    new_brightness=$((new_brightness > 100 ? 100 : new_brightness))
+    if [[ "$new_brightness" -lt 0 ]]; then
+      echo "$new_brightness" > ~/.brightness
+      new_brightness=${new_brightness#-}
+      new_brightness=$((new_brightness > 90 ? 90 : new_brightness))
+      echo "-$new_brightness" > ~/.brightness
+      new_brightness=$(echo "scale=2; $new_brightness / 100" | bc)
+      brightness="0$new_brightness"
+      pkill dimland
+      dimland -a $brightness &
+      exit 0
+    else
+      pkill dimland
+    fi
 
+    new_brightness=$((new_brightness > 100 ? 100 : new_brightness))
     brightness="$new_brightness"
   else
     brightness="$input_brightness"
