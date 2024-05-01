@@ -7,22 +7,22 @@
 
 let
   pname = "osu-lazer-bin";
-  version = "2024.302.1";
+  version = "2024.412.1";
 
   src = {
-    aarch64-darwin = fetchzip {
-      url = "https://github.com/ppy/osu/releases/download/${version}/osu.app.Apple.Silicon.zip";
-      hash = "sha256-FSxXPvbHjLVKU2rlTY2iqIUZSjOPoTES8Bl8j/Ln+6w=";
-      stripRoot = false;
-    };
-    x86_64-darwin = fetchzip {
-      url = "https://github.com/ppy/osu/releases/download/${version}/osu.app.Intel.zip";
-      hash = "sha256-d6jumDva2LAmiixxD9RFiKdiuSv1yPVeX8OgNB7DYpM=";
-      stripRoot = false;
-    };
+    # aarch64-darwin = fetchzip {
+    #   url = "https://github.com/ppy/osu/releases/download/${version}/osu.app.Apple.Silicon.zip";
+    #   hash = "sha256-FSxXPvbHjLVKU2rlTY2iqIUZSjOPoTES8Bl8j/Ln+6w=";
+    #   stripRoot = false;
+    # };
+    # x86_64-darwin = fetchzip {
+    #   url = "https://github.com/ppy/osu/releases/download/${version}/osu.app.Intel.zip";
+    #   hash = "sha256-d6jumDva2LAmiixxD9RFiKdiuSv1yPVeX8OgNB7DYpM=";
+    #   stripRoot = false;
+    # };
     x86_64-linux = fetchurl {
       url = "https://github.com/ppy/osu/releases/download/${version}/osu.AppImage";
-      hash = "sha256-vYG3viY9GBtgaY8ThCSWss+zzjAyVa4fmrWrQdYcUow=";
+      hash = "sha256-9mMP8+Ee8lZcaIkZfcaDmgDqe/rFvEGc01oGwFpnhOY=";
     };
   }.${stdenv.system} or (throw "${pname}-${version}: ${stdenv.system} is unsupported.");
 
@@ -64,7 +64,7 @@ else appimageTools.wrapType2 {
       contents = appimageTools.extract { inherit pname version src; };
     in
     ''
-      mv -v $out/bin/${pname}-${version} $out/bin/osu\!
+      mv -v $out/bin/${pname} $out/bin/osu\!
       install -m 444 -D ${contents}/osu\!.desktop -t $out/share/applications
       for i in 16 32 48 64 96 128 256 512 1024; do
         install -D ${contents}/osu\!.png $out/share/icons/hicolor/''${i}x$i/apps/osu\!.png
