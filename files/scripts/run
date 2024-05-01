@@ -1,0 +1,4 @@
+#/usr/bin/env bash
+
+cmd="$@"
+NIXPKGS_ALLOW_UNFREE=1 nix-shell -p steam-run --run "steam-run $cmd"
