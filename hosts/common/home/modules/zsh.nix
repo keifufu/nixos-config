@@ -25,6 +25,7 @@ fi
     shellAliases = {
       ls = "eza --icons -a --group-directories-first";
       rebuild = "sudo nixos-rebuild switch --flake ${vars.location}# --impure && reload.sh";
+      rebuild-nvidia = "sudo nixos-rebuild switch --flake ${vars.location}-nvidia# --impure && reload.sh";
       rebuild-upgrade = "nix flake update ${vars.location} && sudo nixos-rebuild switch --flake ${vars.location}# --impure && reload.sh";
       lazypush = "lazypush.sh";
     };
