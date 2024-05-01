@@ -174,6 +174,7 @@ let
     $brightness = $scriptsDir/brightness.sh
     $colorpicker = $scriptsDir/colorpicker.sh
     $randomchars = $scriptsDir/randomchars.sh
+    $toggle_mute_active_window = $scriptsDir/toggle_mute_active_window.sh
     $files = thunar
     $browser = firefox
 
@@ -185,7 +186,7 @@ let
     exec-once = gpg --import ${vars.secrets}/git-gpg-key
     exec-once = /usr/lib/polkit-kde-authentication-agent-1
     exec-once = hyprpaper
-    exec-once = firefox
+    exec-once = $browser
     exec-once = waybar
     exec-once = mako
     exec-once = wl-paste --type text --watch cliphist store
@@ -221,6 +222,7 @@ let
     bind = , XF86AudioLowerVolume, exec, $wnp execute volume_down
     bind = , XF86AudioMute, exec, $audio sink toggle-mute
     bind = SUPER, M, exec, $audio source toggle-mute --ping
+    bind = ALT, M, exec, $toggle_mute_active_window
 
     # Alt Tab
     bind = ALT, TAB, exec, $alttab
@@ -311,6 +313,7 @@ let
 
     # Opacity
     windowrulev2 = opacity 0.9 0.9,class:^(firefox)$
+    windowrulev2 = opacity 0.9 0.9,class:^(brave)$
     windowrulev2 = opacity 0.9 0.9,class:^(.*code.*)$
     windowrulev2 = opacity 0.8 0.8,class:^(kitty)$
     windowrulev2 = opacity 0.8 0.8,class:^(Steam)$
@@ -379,6 +382,7 @@ let
 
     windowrulev2 = idleinhibit focus,class:^(mpv)$
     windowrulev2 = idleinhibit fullscreen,class:^(firefox)$
+    windowrulev2 = idleinhibit fullscreen,class:^(brave)$
     windowrulev2 = idleinhibit fullscreen,class:^(.*Minecraft.*)$
 
     # xwaylandvideobridge
