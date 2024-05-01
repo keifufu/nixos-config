@@ -83,7 +83,7 @@ if [ "$operation" == "get" ]; then
   get_volume
   if [[ "$3" == "--waybar" ]]; then
     if [[ $current_volume == 0 ]]; then
-      icon=""
+      icon="󰍭"
       class="off"
     else
       icon=""
