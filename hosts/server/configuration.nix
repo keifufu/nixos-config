@@ -82,7 +82,6 @@
     };
     systemPackages = with pkgs; [
       kitty         # because otherwise it'll cry
-      killall       # killall
       nano          # nano
       curl          # curl
       git           # git
