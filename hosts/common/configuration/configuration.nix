@@ -9,7 +9,6 @@
 #               ├─ configuration.nix *
 #               ├─ hardware-configuration.nix +
 #               └─ ./modules
-#                   ├─ audio.nix +
 #                   ├─ code.nix +
 #                   ├─ docker.nix +
 #                   ├─ games.nix +
@@ -29,7 +28,6 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    ./modules/audio.nix
     ./modules/code.nix
     ./modules/docker.nix
     ./modules/games.nix
@@ -56,9 +54,9 @@ in
   networking = {
     hostName = "${host.hostName}";
     enableIPv6 = false;
-    nameservers = [ "1.1.1.1" "1.0.0.1" ];
+    nameservers = [ "8.8.8.8" "8.0.0.8" ];
     networkmanager.enable = true;
-    networkmanager.insertNameservers = [ "1.1.1.1" "1.0.0.1" ];
+    networkmanager.insertNameservers = [ "8.8.8.8" "8.0.0.8" ];
     extraHosts = ''
       192.168.2.1 speedport.ip
       192.168.2.2 asus.router
@@ -66,13 +64,30 @@ in
     '';
   };
 
+  services.pipewire = {
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    pulse.enable = true;
+  };
+
   security.rtkit.enable = true;
   security.polkit.enable = true;
   security.sudo.wheelNeedsPassword = false;
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport = true;
-  hardware.opengl.driSupport32Bit = true;
-  hardware.opengl.extraPackages = with pkgs; [ nvidia-vaapi-driver ];
+
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+    extraPackages = with pkgs; [
+      nvidia-vaapi-driver
+      # rocmPackages.clr
+      # rocmPackages.clr.icd
+    ];
+  };
+
   hardware.i2c.enable = true;
 
   time.timeZone = "Europe/Berlin";
@@ -121,7 +136,8 @@ in
       # ^ currently breaks the build with some python errors.
       # | cant be bothered to investigate since i dont use this
       # | package right now anyway?
-      btop nvtop
+      btop
+      nvtopPackages.amd
       feh
       mpv
       vlc
@@ -140,14 +156,12 @@ in
       cifs-utils
       alsa-utils
       jq
-      killall
       nano
       pciutils
       inotify-tools
       curl
       wget
       parsec-bin
-      # ungoogled-chromium
       file
       yt-dlp
       man-pages
@@ -159,11 +173,25 @@ in
       vesktop
       ahoviewer
       wireguard-tools
+      grim
+      slurp
+      swappy
+      wl-clipboard
+      wtype
+      hyprpicker
+      hyprpaper
+      wlr-randr
+      wf-recorder
+      cliphist
+      pavucontrol
+      pulseaudio  # just for pactl
+      helvum # patchbay
+      firefox
       brave
-      google-chrome
-      chromium
+      bc # cli calc for usage in scripts
     ] ++ [
       xivlauncher
+      inputs.dimland.packages.${system}.default
     ];
   };
 
