@@ -44,7 +44,7 @@ elif [[ "$1" == "status" ]]; then
       class="on"
       status="Connected to $server"
     else
-      icon=" "
+      icon=""
       class="off"
       status="Disconnected from $server"
     fi
