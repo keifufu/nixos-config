@@ -10,7 +10,6 @@
 #               └─ ./modules
 #                   ├─ bat.nix +
 #                   ├─ btop.nix +
-#                   ├─ firefox.nix +
 #                   ├─ git.nix +
 #                   ├─ gpg.nix +
 #                   ├─ hyprland.nix +
@@ -35,7 +34,6 @@
   imports = [
     ./modules/bat.nix
     ./modules/btop.nix
-    ./modules/firefox.nix
     ./modules/git.nix
     ./modules/gpg.nix
     ./modules/hyprland.nix
