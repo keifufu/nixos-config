@@ -15,6 +15,26 @@
 # Using xremap in home-manager because the system one
 # would not work with application specific settings
 
+# old for archiving, even though i could use git history
+# modmap:
+#   - name: FFXIV
+#     application:
+#       only: ffxiv_dx11.exe
+#     remap:
+#       CapsLock: Alt_L
+#       Btn_Extra: Alt_R
+# keymap:
+#   - name: FFXIV
+#     application:
+#       only: ffxiv_dx11.exe
+#     remap:
+#       Alt_R-Key_1: Key_7
+#       Alt_R-Key_2: Key_8
+#       Alt_R-Key_3: Key_9
+#       Alt_R-Key_4: Key_0
+#       Alt_R-Key_5: Key_Minus
+#       Alt_R-Key_6: Key_Equal
+
 {
   imports = [
     inputs.xremap.homeManagerModules.default
@@ -35,19 +55,8 @@
           application:
             only: ffxiv_dx11.exe
           remap:
-            CapsLock: Alt_L
-            Btn_Extra: Alt_R
+            Btn_Extra: Alt_L
       keymap:
-        - name: FFXIV
-          application:
-            only: ffxiv_dx11.exe
-          remap:
-            Alt_R-Key_1: Key_7
-            Alt_R-Key_2: Key_8
-            Alt_R-Key_3: Key_9
-            Alt_R-Key_4: Key_0
-            Alt_R-Key_5: Key_Minus
-            Alt_R-Key_6: Key_Equal
         - name: AltGr
           remap:
             Ctrl_L-ALT_L-Key_2: Alt_R-Key_2                    # ²
