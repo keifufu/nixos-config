@@ -197,6 +197,7 @@ let
     # xremap doesn't start by default for some reason
     exec-once = systemctl --user start xremap
     exec-once = cliphist wipe
+    exec-once = dimland -a 0 -r 20
     exec-once = vpn.sh connect
     ${execonce}
 

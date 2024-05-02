@@ -37,11 +37,11 @@ elif [ "$operation" == "set" ]; then
       echo "-$new_brightness" > ~/.brightness
       new_brightness=$(echo "scale=2; $new_brightness / 100" | bc)
       brightness="0$new_brightness"
-      pkill dimland
+      pkill -f "dimland[^r]*$" # do not kill dimland with radius
       dimland -a $brightness &
       exit 0
     else
-      pkill dimland
+      pkill -f "dimland[^r]*$" # do not kill dimland with radius
     fi
 
     new_brightness=$((new_brightness > 100 ? 100 : new_brightness))
