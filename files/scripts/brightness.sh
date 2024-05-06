@@ -30,6 +30,10 @@ elif [ "$operation" == "set" ]; then
     current_brightness=$(cat ~/.brightness 2>/dev/null || echo "0")
     new_brightness=$((current_brightness + input_brightness))
 
+    # TODO: refactor to handle the following:
+    # - limit to -90 and 100 in "set" operations not relative, e.g: [-,+]
+    # - handle dimland in "set" operations not relative, e.g: [-,+]
+
     if [[ "$new_brightness" -lt 0 ]]; then
       echo "$new_brightness" > ~/.brightness
       new_brightness=${new_brightness#-}
@@ -37,11 +41,10 @@ elif [ "$operation" == "set" ]; then
       echo "-$new_brightness" > ~/.brightness
       new_brightness=$(echo "scale=2; $new_brightness / 100" | bc)
       brightness="0$new_brightness"
-      pkill -f "dimland[^r]*$" # do not kill dimland with radius
-      dimland -a $brightness &
+      dimland -a $brightness -r 20
       exit 0
     else
-      pkill -f "dimland[^r]*$" # do not kill dimland with radius
+      dimland -a 0 -r 20
     fi
 
     new_brightness=$((new_brightness > 100 ? 100 : new_brightness))

@@ -47,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1714675281,
-        "narHash": "sha256-jnfqUsQO5VJaEpp1DXipwTqBJQSQ89P0prx3wQFaBC8=",
+        "lastModified": 1715009931,
+        "narHash": "sha256-FpNkztJy6r47bIQjNNSJEXIcbVkUS/PT/2dmgY+7IJA=",
         "owner": "keifufu",
         "repo": "dimland",
-        "rev": "de061c9c91ab9108adcbbe15549c6b7d04b89300",
+        "rev": "2214372a2c90bdde1d390d70ad129dd383185bd7",
         "type": "github"
       },
       "original": {
