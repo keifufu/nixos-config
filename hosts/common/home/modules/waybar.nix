@@ -130,6 +130,15 @@ in
 {
   programs.waybar = {
     enable = true;
+    package = pkgs.waybar.overrideAttrs rec {
+      version = "0.10.3";
+      src = pkgs.fetchFromGitHub {
+        owner = "Alexays";
+        repo = "Waybar";
+        rev = version;
+        hash = "sha256-LUageV0xC42MldMmYY1njkm95icBsqID1tEGy3wwrRM=";
+      };
+    };
     settings = {
       mainBar = {
         position = "top";
