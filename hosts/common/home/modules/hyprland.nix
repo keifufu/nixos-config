@@ -94,6 +94,7 @@ let
       border_size = 3
       col.active_border = rgba(c6a0f6ff)
       col.inactive_border = rgba(595959aa)
+      no_cursor_warps = true # do not remove this in the future (try screenshotting without it for example)
       layout = dwindle
     }
 
