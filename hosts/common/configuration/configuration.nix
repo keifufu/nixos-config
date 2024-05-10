@@ -22,9 +22,6 @@
 
 { config, lib, pkgs, inputs, vars, host, ... }:
 
-let
-  xivlauncher = pkgs.callPackage ../../../pkgs/xivlauncher { };
-in
 {
   imports = [
     ./hardware-configuration.nix
@@ -184,13 +181,19 @@ in
       wf-recorder
       cliphist
       pavucontrol
-      pulseaudio  # just for pactl
+      pulseaudio # just for pactl
       helvum # patchbay
       firefox
       brave
       bc # cli calc for usage in scripts
+      (pkgs.xivlauncher.override {
+        steam = pkgs.steam.override {
+          extraProfile = ''
+            unset TZ
+          '';
+        };
+      })
     ] ++ [
-      xivlauncher
       inputs.dimland.packages.${system}.default
     ];
   };

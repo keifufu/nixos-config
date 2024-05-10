@@ -199,6 +199,7 @@ let
     exec-once = cliphist wipe
     exec-once = dimland -a 0 -r 20
     exec-once = vpn.sh connect
+    exec-once = loopback.sh
     ${execonce}
 
     #--KEYBINDS --#
