@@ -90,5 +90,6 @@
   "workbench.layoutControl.enabled": false,
   "breadcrumbs.enabled": false,
   "window.menuBarVisibility": "toggle",
-  "window.zoomLevel": 2
+  "window.zoomLevel": 2,
+  "cSpell.userWords": ["dimland", "keifufu", "libwayland", "libxkbcommon"]
 }
