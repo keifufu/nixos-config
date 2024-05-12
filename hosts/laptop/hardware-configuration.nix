@@ -1,14 +1,3 @@
-#
-#  Laptop specific hardware configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       ├─ hosts.nix
-#       └─ ./laptop
-#           ├─ configuration.nix !
-#           └─ hardware-configuration.nix *
-#
-
 { config, lib, modulesPath, ... }:
 
 {

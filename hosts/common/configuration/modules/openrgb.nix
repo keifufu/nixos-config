@@ -1,15 +1,3 @@
-#
-#  OpenRGB nixOS configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       └─ ./common
-#           └─ ./configuration
-#               ├─ configuration.nix !
-#               └─ ./modules
-#                   └─ openrgb.nix *
-#
-
 { pkgs, lib, ... }:
 
 {

@@ -1,21 +1,8 @@
-#
-#  server nixOS configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       ├─ hosts.nix !
-#       └─ ./server
-#           └─ ./configuration
-#               ├─ configuration.nix *
-#               └─ hardware-configuration.nix +
-#
-
 { pkgs, inputs, vars, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
-    ./vm.nix
   ];
 
   security.sudo.wheelNeedsPassword = false;

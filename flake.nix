@@ -1,11 +1,3 @@
-#
-#  flakey flake flake :nyaboom:
-#
-#  flake.nix *
-#   └─ ./hosts
-#       └─ hosts.nix +
-#
-
 {
   description = "A snowflake, just like me";
 
@@ -30,6 +22,11 @@
       url = "github:keifufu/dimland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ags = {
+      url = "github:Aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    catppuccin.url = "github:catppuccin/nix";
   };
 
   outputs = { nixpkgs, ... } @ inputs:

@@ -1,14 +1,3 @@
-#
-#  Desktop specific hardware configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       ├─ hosts.nix
-#       └─ ./desktop
-#           ├─ configuration.nix !
-#           └─ hardware-configuration.nix *
-#
-
 { lib, modulesPath, host, ... }:
 
 {

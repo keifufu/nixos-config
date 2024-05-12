@@ -1,15 +1,3 @@
-#
-#  Common hardware configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       ├─ hosts.nix
-#       └─ ./common
-#           └─ ./configuration
-#               ├─ configuration.nix !
-#               └─ hardware-configuration.nix *
-#
-
 { config, lib, pkgs, vars, ... }:
 
 let
@@ -39,9 +27,11 @@ in
   boot = {
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     loader = {
-      systemd-boot = {
-        enable = true;
+      grub = {
+        efiSupport = true;
+        device = "nodev";
         configurationLimit = 10;
+        catppuccin.enable = true;
       };
       efi.canTouchEfiVariables = true;
       timeout = 1;

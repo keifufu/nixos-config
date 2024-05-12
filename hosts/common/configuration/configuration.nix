@@ -1,38 +1,14 @@
-#
-#  Common nixOS configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       ├─ hosts.nix !
-#       └─ ./common
-#           └─ ./configuration
-#               ├─ configuration.nix *
-#               ├─ hardware-configuration.nix +
-#               └─ ./modules
-#                   ├─ code.nix +
-#                   ├─ docker.nix +
-#                   ├─ games.nix +
-#                   ├─ hyprland.nix +
-#                   ├─ openrgb.nix +
-#                   ├─ ssh.nix +
-#                   ├─ symlink.nix +
-#                   ├─ thunar.nix +
-#                   └─ xremap.nix +
-#
-
 { config, lib, pkgs, inputs, vars, host, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ./modules/code.nix
-    ./modules/docker.nix
     ./modules/games.nix
     ./modules/hyprland.nix
     ./modules/openrgb.nix
     ./modules/ssh.nix
     ./modules/symlink.nix
-    ./modules/thunar.nix
   ];
 
   programs.zsh.enable = true;
@@ -71,8 +47,24 @@
   };
 
   security.rtkit.enable = true;
-  security.polkit.enable = true;
   security.sudo.wheelNeedsPassword = false;
+  security.polkit.enable = true;
+
+  systemd = {
+    user.services.polkit-kde-authentication-agent-1 = {
+      after = [ "graphical-session.target" ];
+      description = "polkit-kde-authentication-agent-1";
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "graphical-session.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+  };
 
   hardware.opengl = {
     enable = true;
@@ -95,6 +87,7 @@
   console = {
     font = "Lat2-Terminus16";
     keyMap = "de";
+    catppuccin.enable = true;
   };
 
   fonts = {
@@ -107,6 +100,11 @@
       monospace = [ "Source Code Pro" ];
       emoji = [ "Hack Nerd Font" ];
     };
+  };
+
+  catppuccin = {
+    flavour = "mocha";
+    accent = "mauve";
   };
 
   environment = {
@@ -133,19 +131,15 @@
       # ^ currently breaks the build with some python errors.
       # | cant be bothered to investigate since i dont use this
       # | package right now anyway?
-      btop
       nvtopPackages.amd
       feh
       mpv
       vlc
       gimp
-      gnome.file-roller
-      okular
       libsForQt5.polkit-kde-agent
       networkmanagerapplet
       mako
       appimage-run
-      eww
       qbittorrent-qt5
       libreoffice-qt
       imagemagick
@@ -177,6 +171,8 @@
       wtype
       hyprpicker
       hyprpaper
+      hypridle
+      hyprlock
       wlr-randr
       wf-recorder
       cliphist

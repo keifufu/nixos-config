@@ -1,15 +1,3 @@
-#
-#  server hardware configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       ├─ hosts.nix
-#       └─ ./server
-#           └─ ./configuration
-#               ├─ configuration.nix !
-#               └─ hardware-configuration.nix *
-#
-
 { config, lib, pkgs, host, ... }:
 
 {

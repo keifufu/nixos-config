@@ -1,15 +1,3 @@
-#
-#  Games nixOS configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       └─ ./common
-#           └─ ./configuration
-#               ├─ configuration.nix !
-#               └─ ./modules
-#                   └─ games.nix *
-#
-
 { pkgs, ... }:
 
 {

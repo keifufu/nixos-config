@@ -1,15 +1,3 @@
-#
-#  Hyprland nixOS configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       └─ ./common
-#           └─ ./configuration
-#               ├─ configuration.nix !
-#               └─ ./modules
-#                   └─ hyprland.nix *
-#
-
 { config, lib, pkgs, host, system, inputs, vars, ... }:
 
 {

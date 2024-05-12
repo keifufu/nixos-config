@@ -1,38 +1,8 @@
-#
-#  Common home-manager configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       ├─ hosts.nix !
-#       └─ ./common
-#           └─ ./home
-#               ├─ home.nix *
-#               └─ ./modules
-#                   ├─ bat.nix +
-#                   ├─ btop.nix +
-#                   ├─ git.nix +
-#                   ├─ gpg.nix +
-#                   ├─ hyprland.nix +
-#                   ├─ kitty.nix +
-#                   ├─ mako.nix +
-#                   ├─ neofetch.nix +
-#                   ├─ obs-studio.nix +
-#                   ├─ rnnoise.nix +
-#                   ├─ swaylock.nix +
-#                   ├─ theming.nix +
-#                   ├─ thunar.nix +
-#                   ├─ vscode.nix +
-#                   ├─ waybar.nix +
-#                   ├─ wlogout.nix +
-#                   ├─ wofi.nix +
-#                   └─ zsh.nix +
-#
-
 { inputs, config, lib, pkgs, vars, ... }:
 
 {
   imports = [
-    ./modules/bat.nix
+    ./modules/ags.nix
     ./modules/btop.nix
     ./modules/git.nix
     ./modules/gpg.nix
@@ -45,13 +15,19 @@
     ./modules/wofi.nix
     ./modules/swaylock.nix
     ./modules/theming.nix
-    ./modules/thunar.nix
     ./modules/vscode.nix
     ./modules/waybar.nix
     ./modules/wlogout.nix
     ./modules/xremap.nix
+    ./modules/yazi.nix
     ./modules/zsh.nix
   ];
+
+  xdg.enable = true;
+  catppuccin = {
+    flavour = "mocha";
+    accent = "mauve";
+  };
 
   home = {
     username = "${vars.user}";

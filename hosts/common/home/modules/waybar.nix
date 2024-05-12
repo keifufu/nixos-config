@@ -1,15 +1,3 @@
-#
-#  Waybar home-manager configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       └─ ./common
-#           └─ ./home
-#               ├─ home.nix !
-#               └─ ./modules
-#                   └─ waybar.nix *
-#
-
 { host, pkgs, ... }:
 
 let 

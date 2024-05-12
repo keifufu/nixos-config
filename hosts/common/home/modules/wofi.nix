@@ -1,15 +1,3 @@
-#
-#  wofi home-manager configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       └─ ./common
-#           └─ ./home
-#               ├─ home.nix !
-#               └─ ./modules
-#                   └─ wofi.nix *
-#
-
 {
   programs.wofi = {
     enable = true;

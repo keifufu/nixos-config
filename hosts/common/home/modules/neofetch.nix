@@ -1,16 +1,3 @@
-#
-#  neofetch home-manager configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       └─ ./common
-#           └─ ./home
-#               ├─ home.nix !
-#               └─ ./modules
-#                   └─ neofetch.nix *
-#
-
-
 { pkgs, ... }:
 
 {

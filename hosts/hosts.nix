@@ -1,21 +1,10 @@
-#
-#  These are the different profiles that can be used when building NixOS.
-# 
-#  flake.nix !
-#   └─ ./hosts
-#       ├─ hosts.nix *
-#       └─ ./common AND ./desktop OR ./laptop
-#            ├─ ./configuration
-#            ├─  └─ configuration.nix +
-#            └─ ./home 
-#                └─ home.nix +
-#
-
 { inputs, vars, ... }:
 
 let
   system = "x86_64-linux";
   hmModule = inputs.home-manager.nixosModules.home-manager;
+  catppuccinModule = inputs.catppuccin.nixosModules.catppuccin;
+  catppuccinHmModule = inputs.catppuccin.homeManagerModules.catppuccin;
   inherit (inputs.nixpkgs.lib) nixosSystem;
 in
 {
@@ -30,6 +19,7 @@ in
     modules = [
       ./common/configuration/configuration.nix
       ./desktop/configuration.nix
+      catppuccinModule
       hmModule {
         home-manager = {
           useGlobalPkgs = true;
@@ -42,6 +32,7 @@ in
             imports = [
               ./common/home/home.nix
               ./desktop/home.nix
+              catppuccinHmModule
             ];
           };
         };
@@ -59,6 +50,7 @@ in
     modules = [
       ./common/configuration/configuration.nix
       ./laptop/configuration.nix
+      catppuccinModule
       hmModule {
         home-manager = {
           useGlobalPkgs = true;
@@ -71,6 +63,7 @@ in
             imports = [
               ./common/home/home.nix
               ./laptop/home.nix
+              catppuccinHmModule
             ];
           };
         };

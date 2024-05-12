@@ -1,15 +1,3 @@
-#
-#  Hyprland home-manager configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       └─ ./common
-#           └─ ./home
-#               ├─ home.nix !
-#               └─ ./modules
-#                   └─ hyprland.nix *
-#
-
 { config, lib, pkgs, host, vars, ... }:
 
 let
@@ -175,7 +163,7 @@ let
     $colorpicker = $scriptsDir/colorpicker.sh
     $randomchars = $scriptsDir/randomchars.sh
     $toggle_mute_active_window = $scriptsDir/toggle_mute_active_window.sh
-    $files = thunar
+    $filemanager = $term yazi
     $browser = firefox
 
     #--STARTUP --#
@@ -184,8 +172,8 @@ let
     exec-once = exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     exec-once = ssh-add ${vars.secrets}/git-ssh-key
     exec-once = gpg --import ${vars.secrets}/git-gpg-key
-    exec-once = /usr/lib/polkit-kde-authentication-agent-1
     exec-once = hyprpaper
+    exec-once = hypridle
     exec-once = $browser
     exec-once = waybar
     exec-once = mako
@@ -242,11 +230,11 @@ let
     bind = SUPER, W, exec, $wall
     bind = CTRL_SHIFT, R, exec, $randomchars
     bind = CTRL_SHIFT, SPACE, exec, $launcher
-    bind = CTRL_SHIFT, Escape, exec, $term --hold btop
+    bind = CTRL_SHIFT, Escape, exec, $term btop
     bind = SUPER, P, exec, $colorpicker
     bind = CTRL_ALT, L, exec, swaylock
     bind = SUPER, X, exec, $term
-    bind = SUPER, E, exec, $files
+    bind = SUPER, E, exec, $filemanager
     bind = SUPER, H, exec, cliphist list | wofi --dmenu --normal-window | cliphist decode | wl-copy
     bind = SUPER, L, exec, swaylock
     bind = SUPER, Q, exec, wlogout
@@ -321,7 +309,6 @@ let
     windowrulev2 = opacity 0.8 0.8,class:^(Steam)$
     windowrulev2 = opacity 0.8 0.8,class:^(steam)$
     windowrulev2 = opacity 0.8 0.8,class:^(steamwebhelper)$
-    windowrulev2 = opacity 0.8 0.8,class:^(thunar)$
     windowrulev2 = opacity 0.8 0.7,class:^(pavucontrol)$
     windowrulev2 = opacity 0.8 0.7,class:^(org.kde.polkit-kde-authentication-agent-1)$
 
@@ -415,5 +402,8 @@ in
     preload=/home/${vars.user}/wall.png
     wallpaper=,/home/${vars.user}/wall.png
     splash=false
+  '';
+  home.file.".config/hypr/hypridle.conf".text = ''
+    # TODO
   '';
 }

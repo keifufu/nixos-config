@@ -1,15 +1,3 @@
-#
-#  xremap nixOS configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       └─ ./common
-#           └─ ./configuration
-#               ├─ configuration.nix !
-#               └─ ./modules
-#                   └─ xremap.nix *
-#
-
 { inputs, vars, lib, pkgs, host, ... }:
 
 # Using xremap in home-manager because the system one

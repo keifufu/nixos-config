@@ -1,15 +1,3 @@
-#
-#  zsh home-manager configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       └─ ./common
-#           └─ ./home
-#               ├─ home.nix !
-#               └─ ./modules
-#                   └─ zsh.nix *
-#
-
 { pkgs, vars, ... }:
 
 {
@@ -21,6 +9,14 @@ if [[ -n "$IN_NIX_SHELL" ]]; then
   VIRTUAL_ENV_DISABLE_PROMPT=0
 fi
 
+function yy() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
     '';
     shellAliases = {
       ls = "eza --icons -a --group-directories-first";
@@ -37,11 +33,12 @@ fi
     plugins = [
       {
         name = "zsh-syntax-highlighting";
+        file = "zsh-syntax-highlighting.plugin.zsh";
         src = pkgs.fetchFromGitHub {
           owner = "zsh-users";
           repo = "zsh-syntax-highlighting";
-          rev = "1386f1213eb0b0589d73cd3cf7c56e6a972a9bfd";
-          sha256 = "iKx7lsQCoSAbpANYFkNVCZlTFdwOEI34rx/h1rnraSg=";
+          rev = "e0165eaa730dd0fa321a6a6de74f092fe87630b0";
+          sha256 = "sha256-4rW2N+ankAH4sA6Sa5mr9IKsdAg7WTgrmyqJ2V1vygQ=";
         };
       }
       {
@@ -50,8 +47,18 @@ fi
         src = pkgs.fetchFromGitHub {
           owner = "chisui";
           repo = "zsh-nix-shell";
-          rev = "v0.7.0";
-          sha256 = "149zh2rm59blr2q458a5irkfh82y3dwdich60s9670kl3cl5h2m1";
+          rev = "82ca15e638cc208e6d8368e34a1625ed75e08f90";
+          sha256 = "sha256-Rtg8kWVLhXRuD2/Ctbtgz9MQCtKZOLpAIdommZhXKdE=";
+        };
+      }
+      {
+        name = "zsh-shift-select";
+        file = "zsh-shift-select.plugin.zsh";
+        src = pkgs.fetchFromGitHub {
+          owner = "jirutka";
+          repo = "zsh-shift-select";
+          rev = "da460999b7d31aef0f0a82a3e749d70edf6f2ef9";
+          sha256 = "sha256-ekA8acUgNT/t2SjSBGJs2Oko5EB7MvVUccC6uuTI/vc=";
         };
       }
     ];

@@ -1,15 +1,3 @@
-#
-#  swaylock home-manager configuration.
-#
-#  flake.nix
-#   └─ ./hosts
-#       └─ ./common
-#           └─ ./home
-#               ├─ home.nix !
-#               └─ ./modules
-#                   └─ swaylock.nix *
-#
-
 { pkgs, vars, ... }:
 
 {
