@@ -35,6 +35,8 @@
   services.xremap = {
     withWlroots = true;
     watch = true;
+    # TODO: needs mouse = true; for Btn_Extra: Alt_L rebind,
+    # however, mouse = true; breaks trackpad on laptop
     mouse = host.hostName == "desktop";
     debug = false;
     yamlConfig = ''

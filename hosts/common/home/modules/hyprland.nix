@@ -54,6 +54,9 @@ let
     '' else if hostName == "laptop" then ''
       exec-once = nm-applet
     '' else "";
+  sensitivity = with host;
+    if hostName == "desktop" then "0.5"
+    else "0.25";
 in
 let
   hyprlandConf = with host; ''
@@ -68,7 +71,7 @@ let
       kb_model = pc105
       kb_options = 
       kb_rules = 
-      sensitivity = 0.5
+      sensitivity = ${sensitivity}
       accel_profile = flat
       follow_mouse = 1
       ${touchpad}
