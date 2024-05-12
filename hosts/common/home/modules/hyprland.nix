@@ -310,10 +310,14 @@ let
     windowrulev2 = opacity 0.8 0.8,class:^(steam)$
     windowrulev2 = opacity 0.8 0.8,class:^(steamwebhelper)$
     windowrulev2 = opacity 0.8 0.7,class:^(pavucontrol)$
-    windowrulev2 = opacity 0.8 0.7,class:^(org.kde.polkit-kde-authentication-agent-1)$
+
+    # polkit
+    windowrulev2 = float,class:^(polkit-gnome-authentication-agent-1)$
+    windowrulev2 = opacity 0.8 0.7,class:^(polkit-gnome-authentication-agent-1)$
+    windowrulev2 = stayfocused,class:^(polkit-gnome-authentication-agent-1)$
+    windowrulev2 = dimaround,class:^(polkit-gnome-authentication-agent-1)$
 
     # Float
-    windowrulev2 = float,class:^(org.kde.polkit-kde-authentication-agent-1)$
     windowrulev2 = float,class:^(pavucontrol)$
     windowrulev2 = float,class:^(swappy)$
     windowrulev2 = float,title:^(Media viewer)$

@@ -51,14 +51,14 @@
   security.polkit.enable = true;
 
   systemd = {
-    user.services.polkit-kde-authentication-agent-1 = {
-      after = [ "graphical-session.target" ];
-      description = "polkit-kde-authentication-agent-1";
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
       wantedBy = [ "graphical-session.target" ];
       wants = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
         Restart = "on-failure";
         RestartSec = 1;
         TimeoutStopSec = 10;
@@ -127,21 +127,15 @@
       unrar
       eza
       libnotify
-      # ntfy 
-      # ^ currently breaks the build with some python errors.
-      # | cant be bothered to investigate since i dont use this
-      # | package right now anyway?
+      ntfy-sh
       nvtopPackages.amd
       feh
       mpv
       vlc
       gimp
-      libsForQt5.polkit-kde-agent
       networkmanagerapplet
       mako
       appimage-run
-      qbittorrent-qt5
-      libreoffice-qt
       imagemagick
       ffmpeg
       cifs-utils
@@ -152,14 +146,11 @@
       inotify-tools
       curl
       wget
-      parsec-bin
       file
       yt-dlp
       man-pages
       man-pages-posix
-      moonlight-qt
       virt-manager
-      xclip
       notepadqq
       vesktop
       ahoviewer
@@ -167,21 +158,22 @@
       grim
       slurp
       swappy
+      xclip
       wl-clipboard
       wtype
       hyprpicker
       hyprpaper
       hypridle
       hyprlock
-      wlr-randr
       wf-recorder
       cliphist
       pavucontrol
       pulseaudio # just for pactl
-      helvum # patchbay
+      helvum
       firefox
       brave
-      bc # cli calc for usage in scripts
+      bc
+      transmission_4-gtk
       (pkgs.xivlauncher.override {
         steam = pkgs.steam.override {
           extraProfile = ''
@@ -197,11 +189,10 @@
   documentation.dev.enable = true;
 
   programs.corectrl.enable = true;
-  programs.wireshark.enable = true;
-  programs.wireshark.package = pkgs.wireshark;
   services.ddccontrol.enable = true;
   services.fstrim.enable = true;
   services.blueman.enable = true;
+  # TODO: syncthing a good idea?
   services.syncthing = {
     enable = true;
     user = "${vars.user}";
