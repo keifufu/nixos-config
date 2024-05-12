@@ -27,11 +27,9 @@ in
   boot = {
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     loader = {
-      grub = {
-        efiSupport = true;
-        device = "nodev";
+      systemd-boot = {
+        enable = true;
         configurationLimit = 10;
-        catppuccin.enable = true;
       };
       efi.canTouchEfiVariables = true;
       timeout = 1;

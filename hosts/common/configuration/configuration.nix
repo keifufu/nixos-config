@@ -87,7 +87,6 @@
   console = {
     font = "Lat2-Terminus16";
     keyMap = "de";
-    catppuccin.enable = true;
   };
 
   fonts = {
@@ -100,11 +99,6 @@
       monospace = [ "Source Code Pro" ];
       emoji = [ "Hack Nerd Font" ];
     };
-  };
-
-  catppuccin = {
-    flavour = "mocha";
-    accent = "mauve";
   };
 
   environment = {
