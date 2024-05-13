@@ -109,7 +109,7 @@ let
     if hostName == "desktop" then
       [ "custom/record" "tray" "custom/vpn" "custom/mic" "custom/sep" "pulseaudio" "custom/sep" "custom/brightness" "custom/sep" "clock" ]
     else if hostName == "laptop" then
-      [ "custom/record" "tray" "custom/vpn" "custom/mic" "custom/sep" "pulseaudio" "custom/sep" "backlight" "custom/sep" "battery" "custom/sep" "clock" ]
+      [ "custom/record" "tray" "custom/xremap" "custom/vpn" "custom/mic" "custom/sep" "pulseaudio" "custom/sep" "backlight" "custom/sep" "battery" "custom/sep" "clock" ]
     else [ ];
   smooth-scrolling-threshold = with host;
     if hostName == "laptop" then 5
@@ -202,6 +202,13 @@ in
           icon-size = 16;
           spacing = 10;
           reverse-direction = true;
+        };
+        "custom/xremap" = {
+          format = "{}";
+          exec = "xremap.sh status --waybar";
+          return-type = "json";
+          interval = 1;
+          on-click = "xremap.sh toggle";
         };
         "custom/vpn" = {
           format = "{}";
@@ -367,6 +374,7 @@ in
 
       #cpu,
       #memory,
+      #custom-xremap,
       #custom-vpn,
       #custom-mic,
       #custom-wnp {

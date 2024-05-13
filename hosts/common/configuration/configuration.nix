@@ -122,7 +122,7 @@
       eza
       libnotify
       ntfy-sh
-      nvtopPackages.full
+      nvtopPackages.amd # laptop nvidia gpu can suck it, im not building cuda
       feh
       mpv
       vlc
@@ -186,13 +186,6 @@
   services.ddccontrol.enable = true;
   services.fstrim.enable = true;
   services.blueman.enable = true;
-  # TODO: syncthing a good idea?
-  services.syncthing = {
-    enable = true;
-    user = "${vars.user}";
-    dataDir = "/stuff/syncthing";
-    configDir = "/stuff/syncthing/.sc";
-  };
 
   services = {
     xserver.xkb.layout = "de";
