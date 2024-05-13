@@ -122,7 +122,7 @@
       eza
       libnotify
       ntfy-sh
-      nvtopPackages.amd
+      nvtopPackages.full
       feh
       mpv
       vlc
