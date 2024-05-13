@@ -30,12 +30,6 @@
     };
   };
 
-  security.pam.services.swaylock = {
-    text = ''
-      auth include login
-    '';
-  };
-
   programs = {
     hyprland = {
       enable = true;

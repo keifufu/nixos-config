@@ -172,7 +172,6 @@ let
 
     #--STARTUP --#
 
-    exec-once = swaylock
     exec-once = exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     exec-once = ssh-add ${vars.secrets}/git-ssh-key
     exec-once = gpg --import ${vars.secrets}/git-gpg-key
@@ -236,11 +235,9 @@ let
     bind = CTRL_SHIFT, SPACE, exec, $launcher
     bind = CTRL_SHIFT, Escape, exec, $term btop
     bind = SUPER, P, exec, $colorpicker
-    bind = CTRL_ALT, L, exec, swaylock
     bind = SUPER, X, exec, $term
     bind = SUPER, E, exec, $filemanager
     bind = SUPER, H, exec, cliphist list | wofi --dmenu --normal-window | cliphist decode | wl-copy
-    bind = SUPER, L, exec, swaylock
     bind = SUPER, Q, exec, wlogout
     bind = SUPER_ALT, X, exec, $xremap_toggle
 
