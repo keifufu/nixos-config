@@ -33,15 +33,7 @@
   programs = {
     hyprland = {
       enable = true;
-      # TODO: remove patch once new wlroots -> hyprland implementations are ironed out and do not cause issues
-      package = (inputs.hyprland.packages.${pkgs.system}.hyprland.overrideAttrs (old: {
-        patches = (old.patches or []) ++ [
-          (pkgs.fetchpatch {
-            url = "https://github.com/hyprwm/Hyprland/commit/fa69de8ab6cc17bb763a1586c55847c5d5a82a83.patch";
-            hash = "sha256-ZXckiZ+X797p5NA7v83psuHHOd9AvG/CfttAqiJDaFs=";
-          })
-        ];
-      }));
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
     };
   };

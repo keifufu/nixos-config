@@ -2,30 +2,15 @@
   description = "A snowflake, just like me";
 
   inputs = {
-    nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-unstable";
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland = {
-      # url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    xremap = {
-      url = "github:xremap/nix-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    dimland = {
-      url = "github:keifufu/dimland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    ags = {
-      url = "github:Aylur/ags";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    xremap.url = "github:xremap/nix-flake";
+    dimland.url = "github:keifufu/dimland";
+    ags.url = "github:Aylur/ags";
     catppuccin.url = "github:catppuccin/nix";
   };
 

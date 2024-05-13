@@ -37,30 +37,44 @@ This isn't meant for anyone to follow really, it's just a reminder for myself.
 - `t`
 - `1 (EFI System)`
 
-### Swap
+### Stuff Partition
 
 - `n`
 - `2`
 - `default`
-- `+15G`
-- `t`
-- `2`
-- `19 (Linux swap)`
-
-### root
-
-- `n`
-- `3`
-- `default (fill up partition)`
 - `default (fill up partition)`
 - `w (write)`
 
-## Label Partitions
+### Setup LUKS
+
+- `sudo cryptsetup luksFormat /dev/nvme0n1p2`
+- `sudo cryptsetup luksOpen /dev/nvme0n1p2 enc-pv`
+
+### Create Logical Volumes
+
+- `sudo pvcreate /dev/mapper/enc-pv`
+- `sudo vgcreate vg /dev/mapper/enc-pv`
+- `sudo lvcreate -L 16G -n swap vg`
+- `sudo lvcreate -L 250G -n root vg`
+- `sudo lvcreate -l '100%FREE' -n stuff vg`
+
+### Format Partitions & label
 
 - `sudo mkfs.fat -F 32 /dev/nvme0n1p1`
 - `sudo fatlabel /dev/nvme0n1p1 BOOT`
-- `sudo mkswap /dev/nvme0n1p2 -L SWAP`
-- `sudo mkfs.ext4 /dev/nvme0n1p3 -L ROOT`
+- `sudo mkfs.ext4 /dev/vg/root -L ROOT`
+- `sudo mkfs.ext4 /dev/vg/stuff -L STUFF`
+- `sudo mkswap /dev/vg/swap -L SWAP`
+- `sudo cryptsetup config /dev/nvme0n1p2 --label LUKSROOT`
+
+### Installing NixOS
+
+## Mount Partitions
+
+- `sudo mount /dev/vg/root /mnt`
+- `sudo mkdir /mnt/boot`
+- `sudo mount /dev/nvme0n1p1 /mnt/boot`
+- `sudo swapon /dev/vg/swap`
 
 </details>
 
