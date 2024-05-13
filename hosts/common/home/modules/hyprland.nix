@@ -165,6 +165,7 @@ let
     $brightness = $scriptsDir/brightness.sh
     $colorpicker = $scriptsDir/colorpicker.sh
     $randomchars = $scriptsDir/randomchars.sh
+    $xremap_toggle = $scriptsDir/xremap.sh toggle
     $toggle_mute_active_window = $scriptsDir/toggle_mute_active_window.sh
     $filemanager = $term yazi
     $browser = firefox
@@ -241,6 +242,7 @@ let
     bind = SUPER, H, exec, cliphist list | wofi --dmenu --normal-window | cliphist decode | wl-copy
     bind = SUPER, L, exec, swaylock
     bind = SUPER, Q, exec, wlogout
+    bind = SUPER_ALT, X, exec, $xremap_toggle
 
     # Window Manager
     bind = SUPER, C, killactive,
