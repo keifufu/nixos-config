@@ -7,11 +7,11 @@ fi
 
 if [[ "$1" == "status" ]]; then
   if systemctl is-active --quiet --user xremap-mouse; then
-    icon="󰍽"
+    icon="󰍽 "
     class="on"
     status="xremap mouse enabled"
   else
-    icon="󰍾"
+    icon="󰍾 "
     class="off"
     status="xremap mouse disabled"
   fi
