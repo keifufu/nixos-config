@@ -21,6 +21,29 @@
     };
   };
 
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/ROOT";
+    fsType = "ext4";
+  };
+
+  fileSystems."/stuff" = {
+    device = "/dev/disk/by-label/STUFF";
+    fsType = "ext4";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-label/BOOT";
+    fsType = "vfat";
+    options = [ "umask=0077" ];
+  };
+
+  boot.initrd.luks.devices.luksroot = {
+    name = "luksroot";
+    device = "/dev/disk/by-label/LUKSROOT";
+    preLVM = true;
+    allowDiscards = true;
+  };
+
   services.logind.lidSwitch = "hibernate";
 
   services.tlp = {

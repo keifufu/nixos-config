@@ -126,7 +126,7 @@
       feh
       mpv
       vlc
-      gimp
+      krita
       networkmanagerapplet
       mako
       appimage-run
