@@ -37,9 +37,15 @@
     options = [ "umask=0077" ];
   };
 
-  boot.initrd.luks.devices.luksroot = {
-    name = "luksroot";
-    device = "/dev/disk/by-label/LUKSROOT";
+  boot.initrd.luks.devices.stuff = {
+    name = "stuff";
+    device = "/dev/Disk/by-label/STUFF";
+    allowDiscards = true;
+  };
+
+  boot.initrd.luks.devices.cryptroot = {
+    name = "cryptroot";
+    device = "/dev/disk/by-label/CRYPTROOT";
     preLVM = true;
     allowDiscards = true;
   };

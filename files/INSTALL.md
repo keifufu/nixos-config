@@ -59,7 +59,7 @@ use cryptutil.sh for mounting/unmounting
 
 ### Setup LUKS
 
-- `sudo cryptsetup luksFormat --label LUKSROOT /dev/nvme0n1p2`
+- `sudo cryptsetup luksFormat --label CRYPTROOT /dev/nvme0n1p2`
 - `sudo cryptsetup luksOpen /dev/nvme0n1p2 enc-pv`
 
 ### Create Logical Volumes
