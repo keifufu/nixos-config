@@ -73,7 +73,7 @@ This isn't meant for anyone to follow really, it's just a reminder for myself.
 
 - `sudo mount /dev/vg/root /mnt`
 - `sudo mkdir /mnt/boot`
-- `sudo mount /dev/nvme0n1p1 /mnt/boot`
+- `sudo mount -o umask=077 /dev/nvme0n1p1 /mnt/boot`
 - `sudo swapon /dev/vg/swap`
 
 </details>
@@ -119,7 +119,7 @@ This isn't meant for anyone to follow really, it's just a reminder for myself.
 
 ## Install NixOS
 
-`sudo nixos-install --flake .#<host>`
+`sudo nixos-install --flake .#<host> --option substituters "https://cache.nixos.org?trusted=1 https://hyprland.cachix.org?trusted=1 https://nix-community.cachix.org?trusted=1"`
 
 ## After install
 
