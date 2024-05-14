@@ -10,6 +10,10 @@ FILENAME=$(date '+%y-%m-%dT%H-%M-%S.png')
 FEHCLASS="screenshot-overlay";
 OUTPATH="/stuff/screenshots/"
 
+if [[ ! -d "$OUTPATH" ]]; then
+  mkdir "$OUTPATH"
+fi
+
 if [[ $(pgrep -c -f "screenshot.sh") -gt 1 ]]; then
   exit 0
 fi
