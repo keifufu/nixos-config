@@ -5,6 +5,18 @@ This isn't meant for anyone to follow really, it's just a reminder for myself.
 `sudo loadkeys de`
 
 <details>
+<summary>Setting up archive disks</summary>
+
+- `sudo cryptsetup luksFormat --label ARCHIVE1 /dev/<DISK>`
+- `sudo cryptsetup luksOpen /dev/<DISK> ARCHIVE1`
+- `sudo mkfs.ext4 /dev/mapper/ARCHIVE1`
+- `sudo cryptsetup luksClose ARCHIVE1`
+
+use cryptutil.sh for mounting/unmounting
+
+</details>
+
+<details>
 <summary>Enabling wifi</summary>
 
 - `sudo systemctl start wpa_supplicant`
@@ -47,7 +59,7 @@ This isn't meant for anyone to follow really, it's just a reminder for myself.
 
 ### Setup LUKS
 
-- `sudo cryptsetup luksFormat /dev/nvme0n1p2`
+- `sudo cryptsetup luksFormat --label LUKSROOT /dev/nvme0n1p2`
 - `sudo cryptsetup luksOpen /dev/nvme0n1p2 enc-pv`
 
 ### Create Logical Volumes
@@ -65,7 +77,6 @@ This isn't meant for anyone to follow really, it's just a reminder for myself.
 - `sudo mkfs.ext4 /dev/vg/root -L ROOT`
 - `sudo mkfs.ext4 /dev/vg/stuff -L STUFF`
 - `sudo mkswap /dev/vg/swap -L SWAP`
-- `sudo cryptsetup config /dev/nvme0n1p2 --label LUKSROOT`
 
 ### Installing NixOS
 

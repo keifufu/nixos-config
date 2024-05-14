@@ -23,7 +23,7 @@ function yy() {
       rebuild = "sudo nixos-rebuild switch --flake ${vars.location}# --impure && reload.sh";
       rebuild-nvidia = "sudo nixos-rebuild switch --flake ${vars.location}-nvidia# --impure && reload.sh";
       rebuild-upgrade = "nix flake update ${vars.location} && sudo nixos-rebuild switch --flake ${vars.location}# --impure && reload.sh";
-      lazypush = "lazypush.sh";
+      lsblk = "lsblk -o name,size,type,mountpoints,label";
     };
     oh-my-zsh = {
       enable = true;
