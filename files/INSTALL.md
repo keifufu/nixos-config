@@ -1,5 +1,15 @@
 ## Installing
 
+# TODO: laptop partitions:
+
+500mb efi (unencrypted)
+250gb cryptroot
+
+- 16gb swap
+- rest root
+  RESTGB STUFF
+- single ext4 partition
+
 This isn't meant for anyone to follow really, it's just a reminder for myself.
 
 `sudo loadkeys de`
@@ -49,34 +59,42 @@ use cryptutil.sh for mounting/unmounting
 - `t`
 - `1 (EFI System)`
 
-### Stuff Partition
+### Root Partition
 
 - `n`
 - `2`
 - `default`
+- `+250G`
+
+### Stuff Partition
+
+- `n`
+- `3`
+- `default`
 - `default (fill up partition)`
 - `w (write)`
 
-### Setup LUKS
-
-- `sudo cryptsetup luksFormat --label CRYPTROOT /dev/nvme0n1p2`
-- `sudo cryptsetup luksOpen /dev/nvme0n1p2 enc-pv`
-
-### Create Logical Volumes
-
-- `sudo pvcreate /dev/mapper/enc-pv`
-- `sudo vgcreate vg /dev/mapper/enc-pv`
-- `sudo lvcreate -L 16G -n swap vg`
-- `sudo lvcreate -L 250G -n root vg`
-- `sudo lvcreate -l '100%FREE' -n stuff vg`
-
-### Format Partitions & label
+### Format EFI
 
 - `sudo mkfs.fat -F 32 /dev/nvme0n1p1`
 - `sudo fatlabel /dev/nvme0n1p1 BOOT`
+
+### Setup LUKS for ROOT
+
+- `sudo cryptsetup luksFormat --label CRYPTROOT /dev/nvme0n1p2`
+- `sudo cryptsetup luksOpen /dev/nvme0n1p2 cryptroot`
+- `sudo pvcreate /dev/mapper/cryptroot`
+- `sudo vgcreate vg /dev/mapper/cryptroot`
+- `sudo lvcreate -L 16G -n swap vg`
+- `sudo lvcreate -l 100%FREE -n root vg`
 - `sudo mkfs.ext4 /dev/vg/root -L ROOT`
-- `sudo mkfs.ext4 /dev/vg/stuff -L STUFF`
 - `sudo mkswap /dev/vg/swap -L SWAP`
+
+### Setup LUKS for STUFF
+
+- `sudo cryptsetup luksFormat --label STUFF /dev/nvme0n1p3`
+- `sudo cryptsetup luksOpen /dev/nvme0n1p3 stuff`
+- `sudo mkfs.ext4 /dev/mapper/stuff`
 
 ### Installing NixOS
 

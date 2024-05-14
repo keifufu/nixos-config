@@ -39,7 +39,7 @@
 
   boot.initrd.luks.devices.stuff = {
     name = "stuff";
-    device = "/dev/Disk/by-label/STUFF";
+    device = "/dev/disk/by-label/STUFF";
     allowDiscards = true;
   };
 
