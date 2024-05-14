@@ -37,9 +37,9 @@
     options = [ "umask=0077" ];
   };
 
-  boot.initrd.luks.devices.stuff = {
-    name = "stuff";
-    device = "/dev/disk/by-label/STUFF";
+  boot.initrd.luks.devices.cryptstuff = {
+    name = "cryptstuff";
+    device = "/dev/disk/by-label/CRYPTSTUFF";
     allowDiscards = true;
   };
 

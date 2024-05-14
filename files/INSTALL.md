@@ -92,9 +92,9 @@ use cryptutil.sh for mounting/unmounting
 
 ### Setup LUKS for STUFF
 
-- `sudo cryptsetup luksFormat --label STUFF /dev/nvme0n1p3`
-- `sudo cryptsetup luksOpen /dev/nvme0n1p3 stuff`
-- `sudo mkfs.ext4 /dev/mapper/stuff`
+- `sudo cryptsetup luksFormat --label CRYPTSTUFF /dev/nvme0n1p3`
+- `sudo cryptsetup luksOpen /dev/nvme0n1p3 cryptstuff`
+- `sudo mkfs.ext4 /dev/mapper/cryptstuff -L STUFF`
 
 ### Installing NixOS
 
