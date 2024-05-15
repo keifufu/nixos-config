@@ -36,6 +36,35 @@ in
     };
   };
 
+  boot.initrd.luks.devices.cryptroot = {
+    name = "cryptroot";
+    device = "/dev/disk/by-label/CRYPTROOT";
+    preLVM = true;
+    allowDiscards = true;
+  };
+
+  boot.initrd.luks.devices.cryptstuff = {
+    name = "cryptstuff";
+    device = "/dev/disk/by-label/CRYPTSTUFF";
+    allowDiscards = true;
+  };
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/ROOT";
+    fsType = "ext4";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-label/BOOT";
+    fsType = "vfat";
+    options = [ "umask=0077" ];
+  };
+
+  fileSystems."/stuff" = {
+    device = "/dev/disk/by-label/STUFF";
+    fsType = "ext4";
+  };
+
   fileSystems."/smb" =
     {
       device = "//${smb-host}/data";

@@ -168,6 +168,10 @@
       brave
       bc
       transmission_4-gtk
+      cryptsetup
+      hdparm
+      pv
+      nvme-cli
       (pkgs.xivlauncher.override {
         steam = pkgs.steam.override {
           extraProfile = ''

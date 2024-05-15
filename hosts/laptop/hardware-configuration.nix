@@ -21,35 +21,6 @@
     };
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/ROOT";
-    fsType = "ext4";
-  };
-
-  fileSystems."/stuff" = {
-    device = "/dev/disk/by-label/STUFF";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/BOOT";
-    fsType = "vfat";
-    options = [ "umask=0077" ];
-  };
-
-  boot.initrd.luks.devices.cryptstuff = {
-    name = "cryptstuff";
-    device = "/dev/disk/by-label/CRYPTSTUFF";
-    allowDiscards = true;
-  };
-
-  boot.initrd.luks.devices.cryptroot = {
-    name = "cryptroot";
-    device = "/dev/disk/by-label/CRYPTROOT";
-    preLVM = true;
-    allowDiscards = true;
-  };
-
   services.logind.lidSwitch = "hibernate";
 
   services.tlp = {

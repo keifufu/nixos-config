@@ -19,6 +19,7 @@ This isn't meant for anyone to follow really, it's just a reminder for myself.
 
 - `sudo cryptsetup luksFormat --label ARCHIVE1 /dev/<DISK>`
 - `sudo cryptsetup luksOpen /dev/<DISK> ARCHIVE1`
+- `sudo cryptsetup refresh --perf-no_read_workqueue --perf-no_write_workqueue --persistent ARCHIVE1`
 - `sudo mkfs.ext4 /dev/mapper/ARCHIVE1`
 - `sudo cryptsetup luksClose ARCHIVE1`
 
