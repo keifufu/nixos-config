@@ -20,10 +20,8 @@
 
   networking.firewall = {
     enable = true;
-    # http https smb qbit minecraft
-    allowedTCPPorts = [ 80 443 445 8999 25565 ];
-    # qbit
-    allowedUDPPorts = [ 8999 ];
+    # http https smb
+    allowedTCPPorts = [ 80 443 445 ];
   };
 
   services.openssh = {
@@ -68,12 +66,16 @@
       ];
     };
     systemPackages = with pkgs; [
-      kitty         # because otherwise it'll cry
-      nano          # nano
-      curl          # curl
-      git           # git
-      wget          # some scripts use wget instead of curl
-      screen        # screen
+      kitty
+      nano
+      curl
+      git
+      wget
+      screen
+      cryptsetup
+      hdparm
+      pv
+      nvme-cli
     ];
   };
 
@@ -81,11 +83,6 @@
     settings = {
       trusted-users = [ "${vars.user}" "@wheel" ];
       auto-optimise-store = true;
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
     };
     registry.nixpkgs.flake = inputs.nixpkgs;
     extraOptions = ''

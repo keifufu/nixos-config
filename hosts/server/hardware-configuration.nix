@@ -5,7 +5,6 @@
   boot.initrd.kernelModules = [ "amdgpu" ];
 
   boot = {
-    swraid.enable = false; # https://github.com/NixOS/nixpkgs/issues/254807
     kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       systemd-boot = {
@@ -15,6 +14,19 @@
       efi.canTouchEfiVariables = true;
       timeout = 1;
     };
+  };
+
+  boot.initrd.luks.devices.cryptroot = {
+    name = "cryptroot";
+    device = "/dev/disk/by-label/CRYPTROOT";
+    preLVM = true;
+    allowDiscards = true;
+  };
+
+  boot.initrd.luks.devices.cryptstuff = {
+    name = "cryptstuff";
+    device = "/dev/disk/by-label/CRYPTSTUFF";
+    allowDiscards = true;
   };
 
   fileSystems."/" =
