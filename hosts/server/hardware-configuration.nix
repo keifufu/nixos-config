@@ -16,9 +16,9 @@
     };
   };
 
-  boot.kernelParams = [ "id=dhcp" ];
+  boot.kernelParams = [ "ip=192.168.2.111::192.168.2.1:255.255.255.0:server::none" ];
   boot.initrd = {
-    availableKernelModules = [ "r8169" ];
+    availableKernelModules = [ "r8169" ]; # network driver
     systemd.users.${vars.user}.shell = "/bin/cryptsetup-askpass";
     network = {
       enable = true;
