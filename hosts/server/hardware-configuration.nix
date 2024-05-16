@@ -1,7 +1,7 @@
 { config, lib, pkgs, host, vars, ... }:
 
 {
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "sdhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "sdhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "r8169" ];
   boot.initrd.kernelModules = [ "amdgpu" ];
 
   boot = {
@@ -18,7 +18,6 @@
 
   boot.kernelParams = [ "ip=192.168.2.111::192.168.2.1:255.255.255.0:server::none" ];
   boot.initrd = {
-    availableKernelModules = [ "r8169" ]; # network driver
     systemd.users.${vars.user}.shell = "/bin/cryptsetup-askpass";
     network = {
       enable = true;
