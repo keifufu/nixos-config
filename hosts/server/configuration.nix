@@ -49,7 +49,7 @@
     '';
     shares = {
       data = {
-        path = "/stuff/data";
+        path = "/data/data";
         writeable = "yes";
         "guest ok" = "no";
         "force user" = "${vars.user}";
