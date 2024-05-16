@@ -28,7 +28,11 @@
     enable = true;
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
-    hostKeys = [ "/etc/secrets/initrd/ssh_host_rsa_key" ];
+    hostKeys = [{
+      bits = 4096;
+      path = "/etc/secrets/initrd/ssh_host_rsa_key";
+      type = "rsa";
+    }];
   };
   
   virtualisation.docker.enable = true;
