@@ -37,9 +37,9 @@
     allowDiscards = true;
   };
 
-  boot.initrd.luks.devices.cryptstuff = {
-    name = "cryptstuff";
-    device = "/dev/disk/by-label/CRYPTSTUFF";
+  boot.initrd.luks.devices.cryptdata = {
+    name = "cryptdata";
+    device = "/dev/disk/by-label/CRYPTDATA";
     allowDiscards = true;
   };
 
@@ -55,9 +55,9 @@
       fsType = "vfat";
     };
 
-  fileSystems."/stuff" =
+  fileSystems."/data" =
     {
-      device = "/dev/disk/by-label/STUFF";
+      device = "/dev/disk/by-label/DATA";
       fsType = "ext4";
     };
 
