@@ -2,7 +2,7 @@
 
 {
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "sdhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "r8169" ];
-  boot.initrd.kernelModules = [ "amdgpu" "usb_storage" ];
+  boot.initrd.kernelModules = [ "amdgpu" "nvme" "xhci_pci" "sdhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "r8169" ];
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
