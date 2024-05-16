@@ -20,7 +20,8 @@
     };
   };
 
-  boot.kernelParams = [ "ip=192.168.2.111::192.168.2.1:255.255.255.0:server::none" ];
+  # 110 instead of 111 because they don't share the same host key
+  boot.kernelParams = [ "ip=192.168.2.110::192.168.2.1:255.255.255.0:server::none" ];
   boot.initrd = {
     systemd.users.root.shell = lib.mkForce "/bin/cryptsetup-askpass";
     network = {
