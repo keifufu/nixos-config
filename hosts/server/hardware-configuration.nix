@@ -22,7 +22,7 @@
 
   boot.kernelParams = [ "ip=192.168.2.111::192.168.2.1:255.255.255.0:server::none" ];
   boot.initrd = {
-    systemd.users.root.shell = "/bin/cryptsetup-askpass";
+    systemd.users.root.shell = lib.mkForce "/bin/cryptsetup-askpass";
     network = {
       enable = true;
       ssh = {
