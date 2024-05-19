@@ -36,5 +36,9 @@
       rm -rf $HOME/.local/share/reshade
       ln -s "${vars.symlink}/reshade" "$HOME/.local/share/reshade"
     fi
+    if [[ ! -h "$HOME/.local/share/PrismLauncher" ]]; then
+      rm -rf $HOME/.local/share/PrismLauncher
+      ln -s "${vars.symlink}/PrismLauncher" "$HOME/.local/share/PrismLauncher"
+    fi
   '';
 }
