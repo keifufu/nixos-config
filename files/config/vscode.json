@@ -17,6 +17,7 @@
   "extensions.autoUpdate": false,
   "workbench.colorTheme": "Catppuccin Mocha",
   "workbench.sideBar.location": "left",
+  "editor.selectionClipboard": false,
   /* END general settings */
   /* START editor settings */
   "editor.minimap.enabled": false,

@@ -149,6 +149,11 @@ use cryptutil.sh for mounting/unmounting
 
 ## Install NixOS
 
+On server before nixos-install:
+
+- `sudo mkdir -p /mnt/etc/secrets/initrd`
+- `sudo ssh-keygen -t rsa -N "" -f /mnt/etc/secrets/initrd/ssh_host_rsa_key`
+
 `sudo nixos-install --flake .#<host> --option substituters "https://cache.nixos.org?trusted=1 https://hyprland.cachix.org?trusted=1 https://nix-community.cachix.org?trusted=1"`
 
 ## After install
