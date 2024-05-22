@@ -252,8 +252,8 @@ in
           reverse-scrolling = true;
           smooth-scrolling-threshold = smooth-scrolling-threshold;
           format-icons = ["" "" "" "" "" "" "" "" ""];
-          on-scroll-up = "brightness.sh set +10";
-          on-scroll-down = "brightness.sh set -10";
+          on-scroll-up = "brightness.sh set 10 +";
+          on-scroll-down = "brightness.sh set 10 -";
         };
         battery = {
           states = {
