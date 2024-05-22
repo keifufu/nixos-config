@@ -1,45 +1,38 @@
 { pkgs, vars, ... }:
 
 {
+  # TODO: maybe add zoxide to zsh and yazi for better cd
+  # TODO: yazi bookmarks
+  # TODO: yazi cd? dont wanna move around manually
+
   programs.zsh = {
     enable = true;
     initExtra = ''
-if [[ -n "$IN_NIX_SHELL" ]]; then
-  VIRTUAL_ENV=nix-shell
-  VIRTUAL_ENV_DISABLE_PROMPT=0
-fi
+      if [[ -r "$XDG_CACHE_HOME/p10k-instant-prompt-${vars.user}.zsh" ]];
+      then
+        source "$XDG_CACHE_HOME/p10k-instant-prompt-${vars.user}.zsh"
+      fi
 
-function yy() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
-}
+      [[ ! -f ${vars.location}/files/config/p10k.zsh ]] || source ${vars.location}/files/config/p10k.zsh
     '';
     shellAliases = {
-      ls = "eza --icons -a --group-directories-first";
+      ls = "eza --all --icons --group-directories-first --no-permissions --octal-permissions --time-style long-iso";
       rebuild = "sudo nixos-rebuild switch --flake ${vars.location}# --impure && reload.sh";
-      rebuild-nvidia = "sudo nixos-rebuild switch --flake ${vars.location}-nvidia# --impure && reload.sh";
-      rebuild-upgrade = "nix flake update ${vars.location} && sudo nixos-rebuild switch --flake ${vars.location}# --impure && reload.sh";
       lsblk = "lsblk -o name,size,type,mountpoints,label";
       sudow = "sudo -EH";
     };
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" ];
-      theme = "agnoster";
-    };
+    autosuggestion.enable = true;
+    enableCompletion = true;
+    syntaxHighlighting.enable = true;
     plugins = [
       {
-        name = "zsh-syntax-highlighting";
-        file = "zsh-syntax-highlighting.plugin.zsh";
+        name = "powerlevel10k";
+        file = "powerlevel10k.zsh-theme";
         src = pkgs.fetchFromGitHub {
-          owner = "zsh-users";
-          repo = "zsh-syntax-highlighting";
-          rev = "e0165eaa730dd0fa321a6a6de74f092fe87630b0";
-          sha256 = "sha256-4rW2N+ankAH4sA6Sa5mr9IKsdAg7WTgrmyqJ2V1vygQ=";
+          owner = "romkatv";
+          repo = "powerlevel10k";
+          rev = "16e58484262de745723ed114e09217094655eaaa";
+          sha256 = "sha256-3grB3psh134qZOKOzWhJTaLdPpBQHjVC6y6dS/hJEYE=";
         };
       }
       {
