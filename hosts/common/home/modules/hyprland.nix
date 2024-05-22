@@ -97,6 +97,7 @@ let
       disable_splash_rendering = true
       enable_swallow = true
       swallow_regex = ^(kitty)$
+      middle_click_paste = false
     }
 
     decoration {
@@ -188,6 +189,7 @@ let
     exec-once = startwnp.sh
     # exec-once = xwaylandvideobridge
     exec-once = $brightness scan
+    exec-once = $brightness refresh
     # xremap doesn't start by default for some reason
     exec-once = systemctl --user start xremap
     exec-once = cliphist wipe
