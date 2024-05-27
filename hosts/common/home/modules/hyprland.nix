@@ -97,7 +97,8 @@ let
       disable_splash_rendering = true
       enable_swallow = true
       swallow_regex = ^(kitty)$
-      middle_click_paste = false
+      # TODO: uncomment once hyprland is new enough
+      # middle_click_paste = false
     }
 
     decoration {
@@ -172,6 +173,7 @@ let
     $xremap_toggle = $scriptsDir/xremap.sh toggle
     $toggle_mute_active_window = $scriptsDir/toggle_mute_active_window.sh
     $filemanager = $term yazi
+    $filemanagerroot = $term sudo YAZI_CONFIG_HOME=/home/${vars.user}/.config/yazi yazi
     $browser = firefox
 
     #--STARTUP --#
@@ -193,7 +195,6 @@ let
     # xremap doesn't start by default for some reason
     exec-once = systemctl --user start xremap
     exec-once = cliphist wipe
-    exec-once = dimland -a 0 -r 20
     exec-once = vpn.sh connect
     exec-once = loopback.sh
     ${execonce}
@@ -227,6 +228,7 @@ let
 
     # Screenshot & Recording
     bind = , Print, exec, $screenshot
+    bind = SHIFT, Print, exec, $screenshot --satty
     bind = CTRL, Print, exec, $record
     bind = CTRL_SHIFT, Print, exec, $record --audio
 
@@ -242,6 +244,7 @@ let
     bind = SUPER, P, exec, $colorpicker
     bind = SUPER, X, exec, $term
     bind = SUPER, E, exec, $filemanager
+    bind = CTRL_SUPER, E, exec, $filemanagerroot
     bind = SUPER, H, exec, cliphist list | wofi --dmenu --normal-window | cliphist decode | wl-copy
     bind = SUPER, Q, exec, wlogout
     bind = SUPER_ALT, X, exec, $xremap_toggle
