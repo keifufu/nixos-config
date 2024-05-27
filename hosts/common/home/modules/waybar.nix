@@ -109,7 +109,7 @@ let
     if hostName == "desktop" then
       [ "custom/record" "tray" "custom/vpn" "custom/mic" "custom/sep" "pulseaudio" "custom/sep" "custom/brightness" "custom/sep" "clock" ]
     else if hostName == "laptop" then
-      [ "custom/record" "tray" "custom/vpn" "custom/xremap" "custom/mic" "custom/sep" "pulseaudio" "custom/sep" "backlight" "custom/sep" "battery" "custom/sep" "clock" ]
+      [ "custom/record" "tray" "custom/vpn" "custom/xremap" "custom/mic" "custom/sep" "pulseaudio" "custom/sep" "custom/brightness" "custom/sep" "battery" "custom/sep" "clock" ]
     else [ ];
   smooth-scrolling-threshold = with host;
     if hostName == "laptop" then 5
