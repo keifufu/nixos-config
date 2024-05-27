@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <archive>"
+  exit 1
+fi
+
+archive_path="$1"
+archive_name=$(basename "$archive_path")
+archive_dir="${archive_name%.*}"
+# Removing common archive extensions
+archive_dir="${archive_name%.tar.*}"
+archive_dir="${archive_dir%.tar}"
+archive_dir="${archive_dir%.gz}"
+archive_dir="${archive_dir%.bz2}"
+archive_dir="${archive_dir%.xz}"
+
+extract_zip() {
+  /run/current-system/sw/bin/unzip -d "$archive_dir" "$archive_path"
+}
+
+extract_rar() {
+  unrar x "$archive_path" "$archive_dir/"
+}
+
+extract_7z() {
+  7z x "$archive_path" -o"$archive_dir"
+}
+
+extract_tar() {
+  mkdir -p "$archive_dir"
+  tar -xf "$archive_path" -C "$archive_dir"
+}
+
+extract_tar_gz() {
+  mkdir -p "$archive_dir"
+  tar -xzf "$archive_path" -C "$archive_dir"
+}
+
+extract_tar_bz2() {
+  mkdir -p "$archive_dir"
+  tar -xjf "$archive_path" -C "$archive_dir"
+}
+
+extract_tar_xz() {
+  mkdir -p "$archive_dir"
+  tar -xJf "$archive_path" -C "$archive_dir"
+}
+
+case "$archive_path" in
+  *.zip)
+    extract_zip
+    ;;
+  *.rar)
+    extract_rar
+    ;;
+  *.7z)
+    extract_7z
+    ;;
+  *.tar)
+    extract_tar
+    ;;
+  *.tar.gz|*.tgz)
+    extract_tar_gz
+    ;;
+  *.tar.bz2|*.tbz2)
+    extract_tar_bz2
+    ;;
+  *.tar.xz|*.txz)
+    extract_tar_xz
+    ;;
+  *)
+    echo "Unsupported file type."
+    exit 1
+    ;;
+esac
+
+
