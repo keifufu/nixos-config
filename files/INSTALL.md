@@ -1,15 +1,5 @@
 ## Installing
 
-# TODO: laptop partitions:
-
-500mb efi (unencrypted)
-250gb cryptroot
-
-- 16gb swap
-- rest root
-  RESTGB STUFF
-- single ext4 partition
-
 This isn't meant for anyone to follow really, it's just a reminder for myself.
 
 `sudo loadkeys de`
