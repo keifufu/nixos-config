@@ -123,7 +123,6 @@
       libnotify
       ntfy-sh
       nvtopPackages.amd # laptop nvidia gpu can suck it, im not building cuda
-      feh
       mpv
       vlc
       krita
@@ -152,6 +151,7 @@
       grim
       slurp
       swappy
+      satty
       xclip
       wl-clipboard
       wtype
