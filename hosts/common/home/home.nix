@@ -4,6 +4,7 @@
   imports = [
     ./modules/ags.nix
     ./modules/btop.nix
+    ./modules/dimland.nix
     ./modules/git.nix
     ./modules/gpg.nix
     ./modules/hyprland.nix

@@ -179,8 +179,6 @@
           '';
         };
       })
-    ] ++ [
-      inputs.dimland.packages.${system}.default
     ];
   };
 

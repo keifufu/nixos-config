@@ -5,6 +5,8 @@ let
   hmModule = inputs.home-manager.nixosModules.home-manager;
   catppuccinModule = inputs.catppuccin.nixosModules.catppuccin;
   catppuccinHmModule = inputs.catppuccin.homeManagerModules.catppuccin;
+  xremapHmModule = inputs.xremap.homeManagerModules.default;
+  dimlandHmModule = inputs.dimland.homeManagerModules.dimland;
   inherit (inputs.nixpkgs.lib) nixosSystem;
 in
 {
@@ -33,6 +35,8 @@ in
               ./common/home/home.nix
               ./desktop/home.nix
               catppuccinHmModule
+              xremapHmModule
+              dimlandHmModule
             ];
           };
         };
@@ -64,6 +68,8 @@ in
               ./common/home/home.nix
               ./laptop/home.nix
               catppuccinHmModule
+              xremapHmModule
+              dimlandHmModule
             ];
           };
         };

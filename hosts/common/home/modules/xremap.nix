@@ -24,12 +24,11 @@
 #       Alt_R-Key_6: Key_Equal
 
 let
-  yamlConfig = with host;
-  if hostName == "desktop" then ''
+  yamlConfig = ''
     modmap:
       - name: FFXIV
-        application:
-          only: ffxiv_dx11.exe
+        window:
+          only: FINAL FANTASY XIV
         remap:
           Btn_Extra: Alt_L
     keymap:
@@ -46,30 +45,11 @@ let
           Ctrl_L-ALT_L-Key_Minus: Alt_R-Key_Minus            # \
           Ctrl_L-ALT_L-Key_RightBrace: Alt_R-Key_RightBrace  # ~
           Ctrl_L-ALT_L-Key_102ND: Alt_R-Key_102ND            # |
-  '' else ''
-    modmap:
-      - name: FFXIV
-        remap:
-          Btn_Extra: Alt_L
-    keymap:
-      - name: AltGr
-        remap:
-          Ctrl_L-ALT_L-Key_2: Alt_R-Key_2                    # ²
-          Ctrl_L-ALT_L-Key_3: Alt_R-Key_3                    # ³
-          Ctrl_L-ALT_L-Key_7: Alt_R-Key_7                    # {
-          Ctrl_L-ALT_L-Key_8: Alt_R-Key_8                    # [
-          Ctrl_L-ALT_L-Key_9: Alt_R-Key_9                    # ]
-          Ctrl_L-ALT_L-Key_0: Alt_R-Key_0                    # }
-          Ctrl_L-ALT_L-Key_Q: Alt_R-Key_Q                    # @
-          Ctrl_L-ALT_L-Key_E: Alt_R-Key_E                    # €
-          Ctrl_L-ALT_L-Key_Minus: Alt_R-Key_Minus            # \
-          Ctrl_L-ALT_L-Key_RightBrace: Alt_R-Key_RightBrace  # ~
-          Ctrl_L-ALT_L-Key_102ND: Alt_R-Key_102ND            # |
-    '';
+  '' ;
 in
 {
-  imports = [
-    inputs.xremap.homeManagerModules.default
+  home.packages = with pkgs; [
+    inputs.xremap.packages.${system}.default
   ];
 
   systemd.user.services.xremap-mouse = {
