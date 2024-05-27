@@ -172,6 +172,9 @@
       hdparm
       pv
       nvme-cli
+      zoxide
+      electrum
+      android-file-transfer
       (pkgs.xivlauncher.override {
         steam = pkgs.steam.override {
           extraProfile = ''
