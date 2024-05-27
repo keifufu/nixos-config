@@ -1,9 +1,6 @@
 { pkgs, vars, ... }:
 
 {
-  # TODO: maybe add zoxide to zsh and yazi for better cd
-  # TODO: yazi bookmarks
-  # TODO: yazi cd? dont wanna move around manually
 
   programs.zsh = {
     enable = true;
@@ -18,12 +15,14 @@
     shellAliases = {
       ls = "eza --all --icons --group-directories-first --no-permissions --octal-permissions --time-style long-iso";
       rebuild = "sudo nixos-rebuild switch --flake ${vars.location}# --impure && reload.sh";
+      rebuild-trace = "sudo nixos-rebuild switch --flake ${vars.location}# --impure --show-trace --option eval-cache false && reload.sh";
       lsblk = "lsblk -o name,size,type,mountpoints,label";
       sudow = "sudo -EH";
     };
     autosuggestion.enable = true;
     enableCompletion = true;
     syntaxHighlighting.enable = true;
+    oh-my-zsh.enable = true;
     plugins = [
       {
         name = "powerlevel10k";
