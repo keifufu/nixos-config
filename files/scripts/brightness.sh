@@ -10,20 +10,25 @@ if [ "$#" -lt 1 ]; then
   exit 1
 fi
 
+function set_monitor_brightness() {
+  brightness="$1"
+  while IFS= read -r line; do
+    if [ -n "$line" ]; then
+      ddccontrol -s -r 0x10 -w "$brightness" "$line" &
+    fi
+  done < "$XDG_CACHE_HOME/.brightness-scan"
+  wait
+  echo "$brightness" > "$XDG_CACHE_HOME/.brightness-monitor"
+}
+
 function set_brightness() {
   brightness="$1"
+  refresh="$2"
 
   if [ ! -f "$XDG_CACHE_HOME/.brightness-scan" ]; then
     echo "No scan output found"
     exit 1
   fi
-
-  # TODO: handle following case:
-  # current brightness: 50
-  # new brightness: -50
-  # this will start dimland but not set monitors to 0
-  # can do by reading current brightness from file before overriding, and checking if its > 0, then setting monitors to 0
-  # TODO: but my one dumb monitor does not retain brightness from last session?
 
   if [[ "$brightness" -lt 0 ]]; then
     echo "$brightness" > "$XDG_CACHE_HOME/.brightness"
@@ -32,10 +37,16 @@ function set_brightness() {
     echo "-$brightness" > "$XDG_CACHE_HOME/.brightness"
     brightness=$(echo "scale=2; $brightness / 100" | bc)
     brightness="0$brightness"
-    dimland -a $brightness -r 20
+    dimland -a $brightness
+
+    monitor_brightness=$(cat "$XDG_CACHE_HOME/.brightness-monitor" 2>/dev/null || echo "100")
+    if [[ "$monitor_brightness" != 0 || "$refresh" == "true" ]]; then
+      set_monitor_brightness "0"
+    fi
+
     exit 0
   else
-    dimland -a 0 -r 20
+    dimland -a 0
   fi
 
   brightness=$((brightness > 100 ? 100 : brightness))
@@ -46,11 +57,7 @@ function set_brightness() {
   # Wait for a bit to not spam commands when scrolling brightness
   sleep 0.3
 
-  while IFS= read -r line; do
-    if [ -n "$line" ]; then
-      ddccontrol -r 0x10 -w "$brightness" "$line" &
-    fi
-  done < "$XDG_CACHE_HOME/.brightness-scan"
+  set_monitor_brightness "$brightness"
 }
 
 if [ "$1" == "get" ]; then
@@ -76,8 +83,11 @@ elif [ "$1" == "set" ]; then
 
   set_brightness "$brightness"
 elif [ "$1" == "refresh" ]; then
+  # refresh is used to set the correct brightness at startup
+  # as well as improving ddccontrol performance by its daemon
+  # keeping devices opened after using them once
   brightness=$(cat "$XDG_CACHE_HOME/.brightness" 2>/dev/null || echo "0")
-  set_brightness "$brightness"
+  set_brightness "$brightness" "true"
 elif [ "$1" == "scan" ]; then
   ddccontrol -p | grep 'Device:' | awk -F': ' '{print $2}' > "$XDG_CACHE_HOME/.brightness-scan"
   cat "$XDG_CACHE_HOME/.brightness-scan"
