@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# Run `brightness.sh scan` and `brightness.sh refresh` on startup
+# This uses dimland for -90 to 0
+# and ddccontrol and $BACKLIGHT for 0 to 100
+
+if [[ "$(hostname)" == "laptop" ]]; then
+  BACKLIGHT="/sys/class/backlight/amdgpu_bl1/brightness"
+fi
+
 if [ -z "$XDG_CACHE_HOME" ]; then
   echo "Environment variable XDG_CACHE_HOME is missing"
   exit 1
@@ -12,6 +20,11 @@ fi
 
 function set_monitor_brightness() {
   brightness="$1"
+
+  if [[ -n "$BACKLIGHT" ]]; then
+    echo "$brightness" | sudo tee "$BACKLIGHT" > /dev/null
+  fi
+
   while IFS= read -r line; do
     if [ -n "$line" ]; then
       ddccontrol -s -r 0x10 -w "$brightness" "$line" &
