@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ -z "$XDG_CACHE_HOME" ]; then
+  echo "Environment variable XDG_CACHE_HOME is missing"
+  exit 1
+fi
+
 if [ "$1" == "status" ]; then
   if pgrep -x "wf-recorder" > /dev/null; then
     echo "󰑊 Recording"
@@ -7,37 +12,34 @@ if [ "$1" == "status" ]; then
   exit 0
 fi
 
-TOKEN=$(cat $NIXOS_SECRETS/yass_token);
-HOST=$(cat $NIXOS_SECRETS/yass_host);
-FILENAME=$(date '+%y-%m-%dT%H-%M-%S.mp4')
-TMPVIDEO="/tmp/recording.mp4" # has to be static and not mktemp
-TMPIMG=$(mktemp --suffix recording.png)
+OUTPATH="/smb/screenshots/videos"
+VIDEOPATH="$OUTPATH/$(date '+%Y-%m-%dT%H-%M-%S.mp4')"
+THUMBNAIL="$XDG_CACHE_HOME/.recording-thumbnail.png"
+
+if [[ ! -d "$OUTPATH" ]]; then
+  notify-send -u critical "/smb inaccessible"
+  exit 1
+fi
 
 if pgrep -x "wf-recorder" > /dev/null; then
+  id=$(cat "$XDG_CACHE_HOME/.recording-id")
   pkill -SIGINT -x "wf-recorder"
   
-  id=$(notify-send -t 999999 "Uploading video..." --print-id)
+  notify-send -t 0 -r $id "Saving video..."
 
   while pgrep -x wf-recorder > /dev/null; do
     sleep 0.1
   done
 
-  RESPONSE=$(curl -s -w "%{http_code}" -X PUT $HOST/upload?filename=$FILENAME -H "Authorization: $TOKEN" -H "Content-Type: application/octet-stream" --data-binary "@$TMPVIDEO")
+  ffmpeg -y -i "$VIDEOPATH" -ss 00:00:01 -vframes 1 "$THUMBNAIL"
 
-  HTTP_STATUS="${RESPONSE: -3}"
-  BODY="${RESPONSE%${HTTP_STATUS}}"
-
-  ffmpeg -y -i "$TMPVIDEO" -ss 00:00:01 -vframes 1 "$TMPIMG"
-
-  if [[ "$HTTP_STATUS" -ge 200 && "$HTTP_STATUS" -lt 300 ]]; then
-    wl-copy "$BODY?raw"
-    notify-send -t 5000 -r $id -i $TMPIMG "Done uploading"
-  else
-    notify-send -t 5000 -r $id -i $TMPIMG "Failed to upload: $HTTP_STATUS"
-  fi
+  wl-copy < "$VIDEOPATH"
+  notify-send -t 5000 -r $id -i $THUMBNAIL "Done recording"
 elif [ "$1" == "--audio" ]; then
   wf-recorder -x yuv420p --audio="$(pactl get-default-sink).monitor" -g "$(slurp -b "#cad3f533" -c "#ffffffff" -d)" -f $TMPVIDEO <<<Y
 else
   # "-x yuv420p" see https://github.com/ammen99/wf-recorder/issues/218#issuecomment-1710702237
-  wf-recorder -x yuv420p -g "$(slurp -b "#cad3f533" -c "#ffffffff" -d)" -f $TMPVIDEO <<<Y
+  id=$(notify-send -t 0 "Recording..." --print-id)
+  echo $id > "$XDG_CACHE_HOME/.recording-id"
+  wf-recorder -x yuv420p -g "$(slurp -b "#cad3f533" -c "#ffffffff" -d)" -f $VIDEOPATH <<<Y
 fi

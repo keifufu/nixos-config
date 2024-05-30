@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-OUTPATH="/stuff/screenshots"
-FINALIMG="$OUTPATH/$(date '+%y-%m-%dT%H-%M-%S.png')"
+OUTPATH="/smb/screenshots/images"
+FINALIMG="$OUTPATH/$(date '+%Y-%m-%dT%H-%M-%S.png')"
 
 if [[ ! -d "$OUTPATH" ]]; then
-  mkdir "$OUTPATH"
+  notify-send -u critical "/smb inaccessible"
+  exit 1
 fi
 
 if [[ $(pgrep -c -f "screenshot.sh") -gt 1 ]]; then
