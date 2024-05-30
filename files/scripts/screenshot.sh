@@ -18,6 +18,6 @@ else
   hyprpicker -r -z & sleep 0.2
   HYPRPICKER_PID=$!
   region="$(slurp -b "#cad3f533" -c "#ffffffff" -d -w 0)"
-  grim -g "$region" - | { kill $HYPRPICKER_PID; swappy -f - -o "$FINALIMG"; }
+  grim -g "$region" - | { sleep 0.2; kill $HYPRPICKER_PID; swappy -f - -o "$FINALIMG"; }
   wl-copy < "$FINALIMG"
 fi
