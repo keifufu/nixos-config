@@ -12,7 +12,7 @@ if [ "$1" == "status" ]; then
   exit 0
 fi
 
-OUTPATH="/smb/screenshots/videos"
+OUTPATH="/smb/pictures/screenshots/videos"
 VIDEOPATH="$OUTPATH/$(date '+%Y-%m-%dT%H-%M-%S.mp4')"
 THUMBNAIL="$XDG_CACHE_HOME/.recording-thumbnail.png"
 

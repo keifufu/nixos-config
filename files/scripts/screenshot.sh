@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-OUTPATH="/smb/screenshots/images"
+OUTPATH="/smb/pictures/screenshots/images"
 FINALIMG="$OUTPATH/$(date '+%Y-%m-%dT%H-%M-%S.png')"
 
 if [[ ! -d "$OUTPATH" ]]; then
