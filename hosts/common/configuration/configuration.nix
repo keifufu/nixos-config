@@ -174,6 +174,7 @@
       fd
       electrum
       android-file-transfer
+      exiftool
       (pkgs.xivlauncher.override {
         steam = pkgs.steam.override {
           extraProfile = ''
