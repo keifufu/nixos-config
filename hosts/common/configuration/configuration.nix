@@ -27,9 +27,9 @@
   networking = {
     hostName = "${host.hostName}";
     enableIPv6 = false;
-    nameservers = [ "8.8.8.8" "8.0.0.8" ];
+    nameservers = [ "9.9.9.9" "1.1.1.1" ];
     networkmanager.enable = true;
-    networkmanager.insertNameservers = [ "8.8.8.8" "8.0.0.8" ];
+    networkmanager.insertNameservers = [ "9.9.9.9" "1.1.1.1" ];
     extraHosts = ''
       192.168.2.1 speedport.ip
       192.168.2.2 asus.router
@@ -122,7 +122,6 @@
       eza
       libnotify
       ntfy-sh
-      nvtopPackages.amd # laptop nvidia gpu can suck it, im not building cuda
       mpv
       vlc
       krita
@@ -172,7 +171,7 @@
       hdparm
       pv
       nvme-cli
-      zoxide
+      fd
       electrum
       android-file-transfer
       (pkgs.xivlauncher.override {
