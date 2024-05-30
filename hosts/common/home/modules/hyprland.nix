@@ -197,6 +197,7 @@ let
     exec-once = cliphist wipe
     exec-once = vpn.sh connect
     exec-once = loopback.sh
+    exec-once = ntfy.sh
     ${execonce}
 
     #--KEYBINDS --#
@@ -397,6 +398,7 @@ let
     windowrulev2 = noinitialfocus,class:^(xwaylandvideobridge)$
 
     layerrule = noanim, ^(gtk-layer-shell)$
+    layerrule = noanim, ^(hyprpicker)$
 
     windowrulev2 = float,class:^(wlogout)$
     windowrulev2 = move 0 0,class:^(wlogout)$
