@@ -55,9 +55,9 @@ set_volume() {
 play_ping() {
   if [[ "$1" == "--ping" ]]; then
     if [[ "$muted" == "yes" ]]; then
-      paplay $NIXOS_FILES/sound/unmute.mp3
+      paplay $NIXOS_FILES/sound/unmute.mp3 --volume 65000
     else
-      paplay $NIXOS_FILES/sound/mute.mp3
+      paplay $NIXOS_FILES/sound/mute.mp3 --volume 65000
     fi
   fi
 }
