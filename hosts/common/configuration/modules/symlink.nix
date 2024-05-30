@@ -40,5 +40,9 @@
       rm -rf $HOME/.local/share/PrismLauncher
       ln -s "${vars.symlink}/PrismLauncher" "$HOME/.local/share/PrismLauncher"
     fi
+    if [[ ! -h "$HOME/.local/share/zoxide" ]]; then
+      rm -rf $HOME/.local/share/zoxide
+      ln -s "${vars.symlink}/zoxide" "$HOME/.local/share/zoxide"
+    fi
   '';
 }
