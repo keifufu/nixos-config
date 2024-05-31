@@ -1,34 +1,126 @@
 #!/usr/bin/env bash
 
-ssh_user="keifufu"
-ssh_host="192.168.2.111"
-hostname=$(hostname)
-# matches folders without slashes anymore, with slashes it only matches the path
-excluded_server=(".Trash-1000" "lost+found")
-excluded_desktop=(".Trash-1000" "lost+found" "/games" "/SteamLibrary" "/.pnpm-store")
-date=$(date +"%Y-%m-%d")
-
-read -p "Are you sure you want to run this (y/n)? " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Nn]$ ]]
-then
+function help() {
+  echo "Usage: $0 create (init|desktop|usb)"
+  echo "Usage: $0 move <backup_dest>"
   exit 1
-fi
+}
 
-if [ -d "$1" ] && [ -d "$1/backups" ]; then
-  backup_folder="$1/backups/$date"
+function test_server_connection() {
+  if [[ ! -d "/smb/other" ]]; then
+    echo "Unable to connect to server"
+    exit 1;
+  fi
+}
 
-  # Back up servers /stuff
-  mkdir -p "$backup_folder/server"
-  rsync -ah --info=progress2 --filter=':- .gitignore' "${excluded_server[@]/#/--exclude=}" "$ssh_user@$ssh_host:/data/" "$backup_folder/server"
+function create_init() {
+  test_server_connection
+  local dest="/smb/.backup"
 
-  # Back up current hosts /stuff
-  if [[ "$hostname" == "desktop" ]]; then
-    mkdir -p "$backup_folder/$hostname"
-    rsync -ah --info=progress2 --filter=':- .gitignore' "${excluded_desktop[@]/#/--exclude=}" "/stuff/" "$backup_folder/$hostname"
-  fi # laptop here if needed
-  
-  echo "Backup completed successfully to $backup_folder."
+  if [[ -d "$dest" ]]; then
+    echo "Deleting old backup data"
+    rm -rf "$dest";
+  fi
+
+  mkdir -p $dest
+
+  clone_github() {
+    local gh_user="keifufu"
+    local gh_dir=$1
+    get_repos() {
+      curl -s "https://api.github.com/users/$gh_user/repos" | grep -o 'git@[^"]*'
+    }
+    mkdir -p "$gh_dir"
+    for repo_url in $(get_repos); do
+      local repo_name=$(basename -s .git "$repo_url")
+      git clone "$repo_url" "$gh_dir/$repo_name"
+    done
+  }
+
+  clone_github "$dest/github"
+
+  echo "Done initializing backup"
+}
+
+function create_desktop() {
+  test_server_connection
+  if ! mountpoint -q "/stuff"; then
+    echo "wtf? where /stuff?"
+    exit 1
+  fi
+  local dest="/smb/.backup"
+  local ssh_dest="keifufu@192.168.2.111:/data/data/.backup"
+
+  local excluded_desktop=("/.Trash-1000" "/lost+found" "/games" "/SteamLibrary" "/.pnpm-store" "wineprefix")
+  mkdir -p "$dest/desktop"
+  rsync -ah --info=progress2 --filter=':- .gitignore' "${excluded_desktop[@]/#/--exclude=}" "/stuff/" "$ssh_dest/desktop"
+
+  echo "Done creating desktop"
+}
+
+function create_usb() {
+  test_server_connection
+  if ! mountpoint -q "/usb"; then
+    echo "Mount /usb to continue"
+    exit 1
+  fi
+  local dest="/smb/.backup"
+  local ssh_dest="keifufu@192.168.2.111:/data/data/.backup"
+
+  local excluded_usb=("/.Trash-1000" "/lost+found")
+  mkdir -p "$dest/desktop"
+  rsync -ah --info=progress2 --filter=':- .gitignore' "${excluded_desktop[@]/#/--exclude=}" "/usb/" "$ssh_dest/usb"
+ 
+  echo "Done creating usb"
+}
+
+function move_backup() {
+  local dest="$1"
+  local dotbackup="/data/data/.backup"
+  local excluded_server=("/.Trash-1000" "/lost+found" ".backup")
+
+  if [[ ! -d "$dotbackup" || ! -d "$dotbackup/github" || ! -d "$dotbackup/desktop" || ! -d "$dotbackup/usb" ]]; then
+    echo "backup was not created or is incomplete"
+    exit 1
+  fi
+
+  rsync -ah --info=progress2 "$dotbackup/" "$dest"
+  rsync -ah --info=progress2 --filter=':- .gitignore' "${excluded_server[@]/#/--exclude=}" "/data/" "$dest/server"
+
+  echo "Done moving backup"
+}
+
+if [[ "$1" == "create" ]]; then
+  # Backing up on laptop is not handled yet (or even nessecary)
+  if [[ "$(hostname)" != "desktop" ]]; then
+    echo "Invalid hostname"
+    exit 1
+  fi
+
+  if [[ "$2" == "init" ]]; then
+    create_init
+  elif [[ "$2" == "desktop" ]]; then
+    create_desktop
+  elif [[ "$2" == "usb" ]]; then
+    create_usb
+  else
+    help
+  fi
+elif [[ "$1" == "move" ]]; then
+  if [[ "$(hostname)" != "server" ]]; then
+    echo "Invalid hostname"
+    exit 1
+  fi
+
+  if [[ ! -d "$2" ]]; then
+    echo "$2 does not exist"
+    exit 1
+  elif [[ -d "$2/backup" ]]; then
+    echo "$2 does not have a backup folder"
+    exit 1
+  fi
+
+  move_backup "$2/backup/$(date +"%Y-%m-%d")"
 else
-  echo "Error: $1 does not exist or does not have a backups folder."
+  help
 fi
