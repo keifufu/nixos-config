@@ -79,11 +79,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1716752950,
-        "narHash": "sha256-4F8s96i8a0XPRqu5aNHd9osczgwXQvuyQ6d6ynLjfwA=",
+        "lastModified": 1717166401,
+        "narHash": "sha256-5wVLWotO+ZYNVLNew86qpKj8wyUPoM6uu5QmRF9jFDk=",
         "owner": "keifufu",
         "repo": "dimland",
-        "rev": "845bddbbbe947a7c7bc58b73dc4043c73e6c654e",
+        "rev": "b8b928773e3dd9589c3436f031f461cfa1bca33e",
         "type": "github"
       },
       "original": {
