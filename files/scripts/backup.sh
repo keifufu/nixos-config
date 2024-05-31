@@ -115,7 +115,7 @@ elif [[ "$1" == "move" ]]; then
   if [[ ! -d "$2" ]]; then
     echo "$2 does not exist"
     exit 1
-  elif [[ -d "$2/backup" ]]; then
+  elif [[ ! -d "$2/backup" ]]; then
     echo "$2 does not have a backup folder"
     exit 1
   fi
