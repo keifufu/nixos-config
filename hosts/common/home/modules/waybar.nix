@@ -118,14 +118,19 @@ in
 {
   programs.waybar = {
     enable = true;
-    package = pkgs.waybar.overrideAttrs rec {
+    package = (pkgs.waybar.overrideAttrs (prev: rec {
       version = "0.10.3";
       src = pkgs.fetchFromGitHub {
         owner = "Alexays";
         repo = "Waybar";
-        rev = version;
-        hash = "sha256-LUageV0xC42MldMmYY1njkm95icBsqID1tEGy3wwrRM=";
+        rev = "7163752aa07f145e5951e2388b7693e19fc5d446";
+        hash = "sha256-lSb3GoBbXh8nAb6ICA/Nf3Y2rTJ+0HfxKyC9KxAx38I=";
       };
+      patches = (prev.patches or []) ++ [
+        ./waybar.patch
+      ];
+    })).override {
+      cavaSupport = false;
     };
     settings = {
       mainBar = {
