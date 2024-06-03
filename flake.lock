@@ -812,11 +812,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1717443167,
-        "narHash": "sha256-Bte9khdvTCk6Gh749gNjosDpANAcbbsu96/h1apgoWo=",
+        "lastModified": 1717452691,
+        "narHash": "sha256-EdWq0pa/dM5m6IY2u09WN5kVJ3W+sG4op2/TkCB4CM8=",
         "owner": "keifufu",
         "repo": "WebNowPlaying-CLI",
-        "rev": "6e6cdf8ce0496fcf08ddcf67a58569c8f861228d",
+        "rev": "f1ba96d940ea9df554dac5b7cd2d6bfe1a62cd6e",
         "type": "github"
       },
       "original": {
