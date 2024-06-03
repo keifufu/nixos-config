@@ -23,6 +23,7 @@
       esbenp.prettier-vscode
       humao.rest-client
       llvm-vs-code-extensions.vscode-clangd
+      xaver.clang-format
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       {
         name = "markdown-preview-github-styles";
