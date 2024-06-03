@@ -5,10 +5,20 @@ if [ $# -lt 1 ]; then
   exit 1
 fi
 
+if [ -z "$XDG_CACHE_HOME" ]; then
+  echo "Environment variable XDG_CACHE_HOME is missing"
+  exit 1
+fi
+
 SCRIPT_PATH=$(dirname "$(readlink -f "$0")")
 
 function connect_to_server() {
-  cd "$NIXOS_FILES/scripts/pia"
+  piapath="$XDG_CACHE_HOME/.pia"
+  if [[ ! -d "$piapath" ]]; then
+    git clone https://github.com/pia-foss/manual-connections "$piapath"
+  fi
+
+  cd "$piapath"
 
   pia_credentials=$(cat "$NIXOS_SECRETS/pia_credentials")
   sudo $pia_credentials VPN_PROTOCOL=wireguard PREFERRED_REGION="$1" ./get_region.sh
