@@ -161,7 +161,6 @@ let
 
     $term = kitty
     $wall = $scriptsDir/wall.sh
-    $wnp = $scriptsDir/wnpctl.sh
     $audio = $scriptsDir/audio.sh
     $alttab = $scriptsDir/alttab.sh
     $record = $scriptsDir/record.sh
@@ -188,7 +187,6 @@ let
     exec-once = mako
     exec-once = wl-paste --type text --watch cliphist store
     exec-once = wl-paste --type image --watch cliphist store
-    exec-once = startwnp.sh
     # exec-once = xwaylandvideobridge
     exec-once = $brightness scan
     exec-once = $brightness refresh
@@ -213,13 +211,13 @@ let
     bind = , F12, exec, /stuff/code/gtav-fingerprint-solver/run.sh
 
     # Audio Control
-    bind = , XF86AudioPlay, exec, $wnp execute play_pause
-    bind = , XF86AudioPrev, exec, $wnp execute skip_previous
-    bind = , XF86AudioNext, exec, $wnp execute skip_next
+    bind = , XF86AudioPlay, exec, wnpcli play-pause
+    bind = , XF86AudioPrev, exec, wnpcli skip-previous
+    bind = , XF86AudioNext, exec, wnpcli skip-next
     # bind = , XF86AudioRaiseVolume, exec, $audio sink set +5
     # bind = , XF86AudioLowerVolume, exec, $audio sink set -5
-    bind = , XF86AudioRaiseVolume, exec, $wnp execute volume_up
-    bind = , XF86AudioLowerVolume, exec, $wnp execute volume_down
+    bind = , XF86AudioRaiseVolume, exec, wnpcli set-volume 2+
+    bind = , XF86AudioLowerVolume, exec, wnpcli set-volume 2-
     bind = , XF86AudioMute, exec, $audio sink toggle-mute
     bind = SUPER, M, exec, $audio source toggle-mute --ping
     bind = ALT, M, exec, $toggle_mute_active_window

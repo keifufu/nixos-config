@@ -19,6 +19,7 @@
     ./modules/vscode.nix
     ./modules/waybar.nix
     ./modules/wlogout.nix
+    ./modules/wnpcli.nix
     ./modules/xremap.nix
     ./modules/yazi.nix
     ./modules/zsh.nix

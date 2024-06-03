@@ -7,6 +7,7 @@ let
   catppuccinHmModule = inputs.catppuccin.homeManagerModules.catppuccin;
   xremapHmModule = inputs.xremap.homeManagerModules.default;
   dimlandHmModule = inputs.dimland.homeManagerModules.dimland;
+  wnpcliHmModule = inputs.wnpcli.homeManagerModules.wnpcli;
   inherit (inputs.nixpkgs.lib) nixosSystem;
 in
 {
@@ -37,6 +38,7 @@ in
               catppuccinHmModule
               xremapHmModule
               dimlandHmModule
+              wnpcliHmModule
             ];
           };
         };
@@ -70,6 +72,7 @@ in
               catppuccinHmModule
               xremapHmModule
               dimlandHmModule
+              wnpcliHmModule
             ];
           };
         };

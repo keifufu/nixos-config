@@ -10,6 +10,7 @@
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     xremap.url = "github:xremap/nix-flake";
     dimland.url = "github:keifufu/dimland";
+    wnpcli.url = "git+file:///stuff/code/WebNowPlaying-CLI";
     ags.url = "github:Aylur/ags";
     catppuccin.url = "github:catppuccin/nix";
   };
