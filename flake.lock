@@ -487,11 +487,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1717443106,
-        "narHash": "sha256-aKbOWDK+KcsiyJzQk5kd8XfLtmZPFFa98sGCKSESPFA=",
+        "lastModified": 1717453936,
+        "narHash": "sha256-6FnQC/Q1dRAOOz+d4nwHitE9AXKmrODUrAiC3TxnboE=",
         "owner": "keifufu",
         "repo": "WebNowPlaying-Library",
-        "rev": "bd05abace108544faa4dc07fd83e782f8f4140a3",
+        "rev": "b9d3800b88b94412fba42011e13f410f31821728",
         "type": "github"
       },
       "original": {
@@ -812,11 +812,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1717452691,
-        "narHash": "sha256-EdWq0pa/dM5m6IY2u09WN5kVJ3W+sG4op2/TkCB4CM8=",
+        "lastModified": 1717454063,
+        "narHash": "sha256-wnSUz9n0WWnKp3Ibb0GnZ0bT6atjnsGdxk9aecevHuQ=",
         "owner": "keifufu",
         "repo": "WebNowPlaying-CLI",
-        "rev": "f1ba96d940ea9df554dac5b7cd2d6bfe1a62cd6e",
+        "rev": "16cf574539fc9efe48a36b29371a8af1a3ba8939",
         "type": "github"
       },
       "original": {
