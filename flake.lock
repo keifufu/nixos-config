@@ -814,15 +814,15 @@
       "locked": {
         "lastModified": 1717418281,
         "narHash": "sha256-6tTIjmU0TgVy0qce6QtaMLJBcByBaxh9pxS/R0KmAwo=",
-        "ref": "refs/heads/main",
+        "owner": "keifufu",
+        "repo": "WebNowPlaying-CLI",
         "rev": "ec72e1cea1f334aa7e9ae60b2c5ad353238fe10f",
-        "revCount": 17,
-        "type": "git",
-        "url": "file:///stuff/code/WebNowPlaying-CLI"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///stuff/code/WebNowPlaying-CLI"
+        "owner": "keifufu",
+        "repo": "WebNowPlaying-CLI",
+        "type": "github"
       }
     },
     "xdph": {
