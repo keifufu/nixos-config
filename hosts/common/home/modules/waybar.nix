@@ -178,15 +178,12 @@ in
         };
         "custom/wnp" = {
           format = "{}";
-          return-type = "json";
-          interval = 1;
-          tooltip = true;
-          exec = "wnpctl.sh get formatted --json";
-          on-click-middle = "wnpctl.sh execute play_pause";
-          on-click = "wnpctl.sh execute skip_previous";
-          on-click-right = "wnpctl.sh execute skip_next";
-          on-scroll-up = "wnpctl.sh execute volume_up";
-          on-scroll-down = "wnpctl.sh execute volume_down";
+          exec = "wnpcli metadata -f '{{artist}} - {{title}}' -F";
+          on-click-middle = "wnpcli play-pause";
+          on-click = "wnpcli skip-previous";
+          on-click-right = "wnpcli skip-next";
+          on-scroll-up = "wnpcli set-volume 2+";
+          on-scroll-down = "wnpcli set-volume 2-";
         };
         # "custom/wnp" = {
         #   format = "{}";
