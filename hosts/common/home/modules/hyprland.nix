@@ -123,6 +123,9 @@ let
       shadow_render_power = 5
       col.shadow = 0x66404040
 
+      blurls = bar-0
+      blurls = bar-1
+      blurls = bar-2
       blurls = waybar
       blurls = lockscreen
     }
@@ -183,7 +186,7 @@ let
     exec-once = hyprpaper
     exec-once = hypridle
     exec-once = $browser
-    exec-once = waybar
+    exec-once = ags
     exec-once = mako
     exec-once = wl-paste --type text --watch cliphist store
     exec-once = wl-paste --type image --watch cliphist store
@@ -206,9 +209,6 @@ let
     # Networking
     bind = SUPER_SHIFT, Prior, exec, nmcli networking on
     bind = SUPER_SHIFT, Next, exec, nmcli networking off
-
-    # gtav CHEATS omg hacker hack3r holy shite
-    bind = , F12, exec, /stuff/code/gtav-fingerprint-solver/run.sh
 
     # Audio Control
     bind = , XF86AudioPlay, exec, wnpcli play-pause

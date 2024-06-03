@@ -4,6 +4,7 @@
   environment.systemPackages = with pkgs; [
     nodejs_18
     nodePackages.pnpm
+    bun
     rustup
     clang-tools
     gf
