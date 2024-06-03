@@ -1,12 +1,7 @@
 #/usr/bin/env bash
 
-pkill .waybar-wrapped
-pkill .ags-wrapped
-if [[ "$1" == "waybar" ]]; then
-  waybar >/dev/null 2>&1 & disown
-else
-  ags >/dev/null 2>&1 & disown
-fi
+ags -q
+ags >/dev/null 2>&1 & disown
 
 hyprctl reload
 # i dont know if restart had issues or if i

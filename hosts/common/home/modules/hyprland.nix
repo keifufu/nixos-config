@@ -126,7 +126,6 @@ let
       blurls = bar-0
       blurls = bar-1
       blurls = bar-2
-      blurls = waybar
       blurls = lockscreen
     }
 

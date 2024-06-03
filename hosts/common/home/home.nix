@@ -17,7 +17,6 @@
     ./modules/swaylock.nix
     ./modules/theming.nix
     ./modules/vscode.nix
-    ./modules/waybar.nix
     ./modules/wlogout.nix
     ./modules/wnpcli.nix
     ./modules/xremap.nix
