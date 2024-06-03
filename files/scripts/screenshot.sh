@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
-OUTPATH="/smb/pictures/screenshots/images"
+if [ -z "$NIXOS_SCREENSHOTDIR" ]; then
+  echo "Environment variable NIXOS_SCREENSHOTDIR is missing"
+  exit 1
+fi
+
+OUTPATH="$NIXOS_SCREENSHOTDIR/images"
 FINALIMG="$OUTPATH/$(date '+%Y-%m-%dT%H-%M-%S.png')"
 
 if [[ ! -d "$OUTPATH" ]]; then
-  notify-send -u critical "/smb inaccessible"
+  notify-send -u critical "$NIXOS_SCREENSHOTDIR inaccessible or $NIXOS_SCREENSHOTDIR/images missing"
   exit 1
 fi
 

@@ -5,6 +5,11 @@ if [ -z "$XDG_CACHE_HOME" ]; then
   exit 1
 fi
 
+if [ -z "$NIXOS_SCREENSHOTDIR" ]; then
+  echo "Environment variable NIXOS_SCREENSHOTDIR is missing"
+  exit 1
+fi
+
 if [ "$1" == "status" ]; then
   if pgrep -x "wf-recorder" > /dev/null; then
     echo "󰑊 Recording"
@@ -12,12 +17,12 @@ if [ "$1" == "status" ]; then
   exit 0
 fi
 
-OUTPATH="/smb/pictures/screenshots/videos"
+OUTPATH="$NIXOS_SCREENSHOTDIR/videos"
 VIDEOPATH="$OUTPATH/$(date '+%Y-%m-%dT%H-%M-%S.mp4')"
 THUMBNAIL="$XDG_CACHE_HOME/.recording-thumbnail.png"
 
 if [[ ! -d "$OUTPATH" ]]; then
-  notify-send -u critical "/smb inaccessible"
+  notify-send -u critical "$NIXOS_SCREENSHOTDIR inaccessible or $NIXOS_SCREENSHOTDIR/videos missing"
   exit 1
 fi
 

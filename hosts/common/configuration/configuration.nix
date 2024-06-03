@@ -107,6 +107,7 @@
       NIXOS_SECRETS = "${vars.secrets}";
       NIXOS_FILES = "${vars.location}/files";
       NIXOS_WALLDIR = "${vars.walldir}";
+      NIXOS_SCREENSHOTDIR = "${vars.screenshotdir}";
       PATH = [
         "${vars.location}/files/scripts"
       ];
