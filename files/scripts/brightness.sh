@@ -50,7 +50,7 @@ function set_brightness() {
     echo "-$brightness" > "$XDG_CACHE_HOME/.brightness"
     brightness=$(echo "scale=2; $brightness / 100" | bc)
     brightness="0$brightness"
-    dimland -a $brightness
+    dimland -a $brightness #-o $WAYBAR_OUTPUT_NAME
 
     monitor_brightness=$(cat "$XDG_CACHE_HOME/.brightness-monitor" 2>/dev/null || echo "100")
     if [[ "$monitor_brightness" != 0 || "$refresh" == "true" ]]; then
@@ -59,7 +59,7 @@ function set_brightness() {
 
     exit 0
   else
-    dimland -a 0
+    dimland -a 0 # -o $WAYBAR_OUTPUT_NAME
   fi
 
   brightness=$((brightness > 100 ? 100 : brightness))
