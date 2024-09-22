@@ -36,7 +36,16 @@ mpscd.connect("changed", ({ value }) => {
   }
 });
 
-App.config({
-  style: "./style.css",
-  windows: [Bar("HDMI-A-1"), Bar("DP-1", true), Bar("DP-3"), Launcher()],
-});
+const hostname = Utils.exec(["bash", "-c", "hostname"]);
+
+if (hostname === "desktop") {
+  App.config({
+    style: "./style.css",
+    windows: [Bar("HDMI-A-1"), Bar("DP-1", true), Bar("DP-3"), Launcher()],
+  });
+} else if (hostname === "laptop") {
+  App.config({
+    style: "./style.css",
+    windows: [Bar("eDP-1"), Launcher()],
+  });
+}

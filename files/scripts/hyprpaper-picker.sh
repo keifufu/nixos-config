@@ -8,11 +8,11 @@ fi
 
 files=("$SNOWFLAKE_WALLDIR"/*)
 formatted_files=()
-for file in "''${files[@]}"; do
+for file in "${files[@]}"; do
   filename=$(basename "$file")
   formatted_files+=("img:$file:text:$filename")
 done
-selected=$(printf "%s\n" "''${formatted_files[@]}" | wofi --dmenu --normal-window)
+selected=$(printf "%s\n" "${formatted_files[@]}" | wofi --dmenu --normal-window)
 image=$(basename "$(echo "$selected" | cut -d':' -f4)")
 if [[ -n "$image" ]]; then
   opacity=$(echo -e "0%\n5%\n10%\n15%\n20%\n25%\n30%\n35%\n40%\n45%\n50%" | wofi --dmenu --normal-window)

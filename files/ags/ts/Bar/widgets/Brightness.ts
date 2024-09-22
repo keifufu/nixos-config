@@ -1,6 +1,8 @@
 import { globalState } from "ts/main";
 import { debounce } from "ts/utils";
 
+// TODO: if on laptop, scroll a lot slower, and also properly set eDP-1 brightness.
+
 export function createBrightnessState() {
   const ddcutilresult = Utils.exec("ddcutil detect");
   const displays: { output: string; i2c: number }[] = [];
