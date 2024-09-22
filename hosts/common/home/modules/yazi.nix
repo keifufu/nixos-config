@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 {
+  home.packages = with pkgs; [
+    p7zip-rar
+    fd
+  ];
+
   programs.yazi = {
     enable = true;
     catppuccin.enable = true;
@@ -56,11 +61,9 @@
         { on = [ "D" ];         run = "remove";                     desc = "Move the files to the trash"; }
         { on = [ "a" ];         run = "create";                     desc = "Create a file or directory (ends with / for directories)"; }
         { on = [ "r" ];         run = "rename --cursor=before_ext"; desc = "Rename a file or directory"; }
-        { on = [ ";" ];         run = "shell";                      desc = "Run a shell command"; }
-        { on = [ ":" ];         run = "shell --block";              desc = "Run a shell command (block the UI until the command finishes)"; }
+        { on = [ ";" ];         run = "shell --interactive";                      desc = "Run a shell command"; }
+        { on = [ ":" ];         run = "shell --interactive --block";              desc = "Run a shell command (block the UI until the command finishes)"; }
         { on = [ "." ];         run = "hidden toggle";              desc = "Toggle the visibility of hidden files"; }
-
-        { on = [ "z" ];         run = "plugin zoxide";              desc = "Jump to a directory using zoxide"; }
 
         # Find
         { on = [ "<C-f>" ]; run = "find --smart";            desc = "Find next file"; }
@@ -83,17 +86,17 @@
         { on = [ "c" "n" ]; run = "copy name_without_ext"; desc = "Copy the name of the file without the extension"; }
 
         # Sorting
-        { on = [ "s" "M" ]; run = "sort modified --dir-first";               desc = "Sort by modified time"; }
+        { on = [ "s" "M" ]; run = "sort modified --reverse=no --dir-first";               desc = "Sort by modified time"; }
         { on = [ "s" "m" ]; run = "sort modified --reverse --dir-first";     desc = "Sort by modified time (reverse)"; }
-        { on = [ "s" "C" ]; run = "sort created --dir-first";                desc = "Sort by created time"; }
+        { on = [ "s" "C" ]; run = "sort created --reverse=no --dir-first";                desc = "Sort by created time"; }
         { on = [ "s" "c" ]; run = "sort created --reverse --dir-first";      desc = "Sort by created time (reverse)"; }
-        { on = [ "s" "E" ]; run = "sort extension --dir-first";         	    desc = "Sort by extension"; }
+        { on = [ "s" "E" ]; run = "sort extension --reverse=no --dir-first";         	    desc = "Sort by extension"; }
         { on = [ "s" "e" ]; run = "sort extension --reverse --dir-first";    desc = "Sort by extension (reverse)"; }
-        { on = [ "s" "A" ]; run = "sort alphabetical --dir-first";           desc = "Sort alphabetically"; }
+        { on = [ "s" "A" ]; run = "sort alphabetical --reverse=no --dir-first";           desc = "Sort alphabetically"; }
         { on = [ "s" "a" ]; run = "sort alphabetical --reverse --dir-first"; desc = "Sort alphabetically (reverse)"; }
-        { on = [ "s" "N" ]; run = "sort natural --dir-first";                desc = "Sort naturally"; }
+        { on = [ "s" "N" ]; run = "sort natural --reverse=no --dir-first";                desc = "Sort naturally"; }
         { on = [ "s" "n" ]; run = "sort natural --reverse --dir-first";      desc = "Sort naturally (reverse)"; }
-        { on = [ "s" "S" ]; run = "sort size --dir-first";                   desc = "Sort by size"; }
+        { on = [ "s" "S" ]; run = "sort size --reverse=no --dir-first";                   desc = "Sort by size"; }
         { on = [ "s" "s" ]; run = "sort size --reverse --dir-first";         desc = "Sort by size (reverse)"; }
 
         # Tasks
@@ -177,36 +180,49 @@
 
   xdg.configFile."yazi/init.lua".text = ''
 -- https://yazi-rs.github.io/docs/tips/#full-border
-function Manager:render(area)
-	local chunks = self:layout(area)
+local function setup(_, opts)
+	local type = opts and opts.type or ui.Border.ROUNDED
+	local old_build = Tab.build
 
-	local bar = function(c, x, y)
-		x, y = math.max(0, x), math.max(0, y)
-		return ui.Bar(ui.Rect { x = x, y = y, w = ya.clamp(0, area.w - x, 1), h = math.min(1, area.h) }, ui.Bar.TOP):symbol(c)
+	Tab.build = function(self, ...)
+		local bar = function(c, x, y)
+			if x <= 0 or x == self._area.w - 1 then
+				return ui.Bar(ui.Rect.default, ui.Bar.TOP)
+			end
+
+			return ui.Bar(
+				ui.Rect { x = x, y = math.max(0, y), w = ya.clamp(0, self._area.w - x, 1), h = math.min(1, self._area.h) },
+				ui.Bar.TOP
+			):symbol(c)
+		end
+
+		local c = self._chunks
+		self._chunks = {
+			c[1]:padding(ui.Padding.y(1)),
+			c[2]:padding(ui.Padding(c[1].w > 0 and 0 or 1, c[3].w > 0 and 0 or 1, 1, 1)),
+			c[3]:padding(ui.Padding.y(1)),
+		}
+
+		local style = THEME.manager.border_style
+		self._base = ya.list_merge(self._base or {}, {
+			ui.Border(self._area, ui.Border.ALL):type(type):style(style),
+			ui.Bar(self._chunks[1], ui.Bar.RIGHT):style(style),
+			ui.Bar(self._chunks[3], ui.Bar.LEFT):style(style),
+
+			bar("┬", c[1].right - 1, c[1].y),
+			bar("┴", c[1].right - 1, c[1].bottom - 1),
+			bar("┬", c[2].right, c[2].y),
+			bar("┴", c[2].right, c[2].bottom - 1),
+		})
+
+		old_build(self, ...)
 	end
-
-	return ya.flat {
-		-- Borders
-		ui.Border(area, ui.Border.ALL):type(ui.Border.ROUNDED),
-		ui.Bar(chunks[1], ui.Bar.RIGHT),
-		ui.Bar(chunks[3], ui.Bar.LEFT),
-
-		bar("┬", chunks[1].right - 1, chunks[1].y),
-		bar("┴", chunks[1].right - 1, chunks[1].bottom - 1),
-		bar("┬", chunks[2].right, chunks[2].y),
-		bar("┴", chunks[2].right, chunks[1].bottom - 1),
-
-		-- Parent
-		Parent:render(chunks[1]:padding(ui.Padding.xy(1))),
-		-- Current
-		Current:render(chunks[2]:padding(ui.Padding.y(1))),
-		-- Preview
-		Preview:render(chunks[3]:padding(ui.Padding.xy(1))),
-	}
 end
 
+setup()
+
 -- https://yazi-rs.github.io/docs/tips/#user-group-in-status
-function Status:owner()
+Status:children_add(function()
 	local h = cx.active.current.hovered
 	if h == nil or ya.target_family() ~= "unix" then
 		return ui.Line {}
@@ -218,37 +234,14 @@ function Status:owner()
 		ui.Span(ya.group_name(h.cha.gid) or tostring(h.cha.gid)):fg("magenta"),
 		ui.Span(" "),
 	}
-end
-
-function Status:render(area)
-	self.area = area
-
-	local left = ui.Line { self:mode(), self:size(), self:name() }
-	local right = ui.Line { self:owner(), self:permissions(), self:percentage(), self:position() }
-	return {
-		ui.Paragraph(area, { left }),
-		ui.Paragraph(area, { right }):align(ui.Paragraph.RIGHT),
-		table.unpack(Progress:render(area, right:width())),
-	}
-end
+end, 500, Status.RIGHT)
 
 -- https://yazi-rs.github.io/docs/tips/#username-hostname-in-header
-function Header:host()
+Header:children_add(function()
 	if ya.target_family() ~= "unix" then
 		return ui.Line {}
 	end
 	return ui.Span(ya.user_name() .. "@" .. ya.host_name() .. ":"):fg("blue")
-end
-
-function Header:render(area)
-	self.area = area
-
-	local right = ui.Line { self:count(), self:tabs() }
-	local left = ui.Line { self:host(), self:cwd(math.max(0, area.w - right:width())) }
-	return {
-		ui.Paragraph(area, { left }),
-		ui.Paragraph(area, { right }):align(ui.Paragraph.RIGHT),
-	}
-end
+end, 500, Header.LEFT)
   '';
 }

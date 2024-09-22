@@ -1,12 +1,6 @@
 #/usr/bin/env bash
 
-ags -q
-ags >/dev/null 2>&1 & disown
-
-hyprctl reload
-# i dont know if restart had issues or if i
-# was dumb and was using reload but whatever this works
-# update: this sometimes fucks all up until i replug input devices
-# i dont even know...
-# systemctl --user stop xremap
-# systemctl --user start xremap
+# TODO: remove this temporary fix for https://github.com/Aylur/ags/issues/444
+pkill -f "^wnpcli metadata -f"
+pkill -f "^mpscd consume ags"
+systemctl restart --user ags.service

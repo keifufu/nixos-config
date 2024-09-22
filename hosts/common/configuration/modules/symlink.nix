@@ -3,10 +3,10 @@
 {
   # -h checks if it's a symbolic link, if it's not, we delete it and create a link
   system.userActivationScripts.symlink = ''
-    if [[ ! -h "$HOME/.config/Code/User/settings.json" ]]; then
-      mkdir -p $HOME/.config/Code/User
-      rm -rf $HOME/.config/Code/User/settings.json
-      ln -s "${vars.location}/files/config/vscode.json" "$HOME/.config/Code/User/settings.json"
+    if [[ ! -h "$HOME/.config/VSCodium/User/settings.json" ]]; then
+      mkdir -p $HOME/.config/VSCodium/User
+      rm -rf $HOME/.config/VSCodium/User/settings.json
+      ln -s "${vars.location}/files/config/vscode.json" "$HOME/.config/VSCodium/User/settings.json"
     fi
     if [[ ! -h "$HOME/.mozilla" ]]; then
       rm -rf $HOME/.mozilla
@@ -39,10 +39,6 @@
     if [[ ! -h "$HOME/.local/share/PrismLauncher" ]]; then
       rm -rf $HOME/.local/share/PrismLauncher
       ln -s "${vars.symlink}/PrismLauncher" "$HOME/.local/share/PrismLauncher"
-    fi
-    if [[ ! -h "$HOME/.local/share/zoxide" ]]; then
-      rm -rf $HOME/.local/share/zoxide
-      ln -s "${vars.symlink}/zoxide" "$HOME/.local/share/zoxide"
     fi
   '';
 }

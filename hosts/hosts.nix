@@ -1,18 +1,8 @@
 { inputs, vars, ... }:
 
-let
-  system = "x86_64-linux";
-  hmModule = inputs.home-manager.nixosModules.home-manager;
-  catppuccinModule = inputs.catppuccin.nixosModules.catppuccin;
-  catppuccinHmModule = inputs.catppuccin.homeManagerModules.catppuccin;
-  xremapHmModule = inputs.xremap.homeManagerModules.default;
-  dimlandHmModule = inputs.dimland.homeManagerModules.dimland;
-  wnpcliHmModule = inputs.wnpcli.homeManagerModules.wnpcli;
-  inherit (inputs.nixpkgs.lib) nixosSystem;
-in
 {
-  desktop = nixosSystem {
-    inherit system;
+  desktop = inputs.nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux";
     specialArgs = {
       inherit inputs vars;
       host = {
@@ -22,9 +12,9 @@ in
     modules = [
       ./common/configuration/configuration.nix
       ./desktop/configuration.nix
-      catppuccinModule
-      hmModule {
+      inputs.home-manager.nixosModules.home-manager {
         home-manager = {
+          backupFileExtension = "hm-backup";
           useGlobalPkgs = true;
           useUserPackages = true;
           extraSpecialArgs = {
@@ -35,18 +25,14 @@ in
             imports = [
               ./common/home/home.nix
               ./desktop/home.nix
-              catppuccinHmModule
-              xremapHmModule
-              dimlandHmModule
-              wnpcliHmModule
             ];
           };
         };
       }
     ];
   };
-  laptop = nixosSystem {
-    inherit system;
+  laptop = inputs.nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux";
     specialArgs = {
       inherit inputs vars;
       host = {
@@ -56,9 +42,9 @@ in
     modules = [
       ./common/configuration/configuration.nix
       ./laptop/configuration.nix
-      catppuccinModule
-      hmModule {
+      inputs.home-manager.nixosModules.home-manager {
         home-manager = {
+          backupFileExtension = "hm-backup";
           useGlobalPkgs = true;
           useUserPackages = true;
           extraSpecialArgs = {
@@ -69,18 +55,14 @@ in
             imports = [
               ./common/home/home.nix
               ./laptop/home.nix
-              catppuccinHmModule
-              xremapHmModule
-              dimlandHmModule
-              wnpcliHmModule
             ];
           };
         };
       }
     ];
   };
-  server = nixosSystem {
-    inherit system;
+  server = inputs.nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux";
     specialArgs = {
       inherit inputs vars;
       host.hostName = "server";

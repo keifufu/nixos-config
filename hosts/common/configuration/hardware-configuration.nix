@@ -10,8 +10,9 @@ let
 in
 {
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback.out ];
-  boot.initrd.kernelModules = [ "amdgpu" "v4l2loopback" ];
+  boot.kernelModules = [ "v4l2loopback" ];
   boot.consoleLogLevel = 3;
 
   boot.extraModprobeConfig = ''
@@ -21,12 +22,8 @@ in
   swapDevices = [ { device = "/dev/disk/by-label/SWAP"; } ];
   boot.resumeDevice = "/dev/disk/by-label/SWAP";
 
-  systemd.sleep.extraConfig = ''
-    AllowHibernation=yes
-  '';
-
   boot = {
-    kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       systemd-boot = {
         enable = true;
@@ -78,6 +75,4 @@ in
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   powerManagement.enable = true;
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
 }

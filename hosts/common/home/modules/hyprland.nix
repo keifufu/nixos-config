@@ -1,33 +1,11 @@
-{ config, lib, pkgs, host, vars, ... }:
+{ config, lib, pkgs, host, vars, inputs, ... }:
 
 let
-  monitor-size = with host;
-    if hostName == "desktop" then "6400 1440"
-    else if hostName == "laptop" then "1920 1080"
-    else "";
-  leftmost-monitor = with host;
-    if hostName == "desktop" then "HDMI-A-1"
-    else if hostName == "laptop" then "eDP-1"
-    else "";
-  touchpad = with host;
-    if hostName == "laptop" then ''
-      touchpad {
-        natural_scroll = true
-        middle_button_emulation = true
-        tap-to-click = true
-      }
-    '' else "";
-  gestures = with host;
-    if hostName == "laptop" then ''
-      gestures {
-        workspace_swipe = true
-      }
-    '' else "";
   monitors = with host;
     if hostName == "desktop" then ''
       monitor = HDMI-A-1, 1920x1080@144, 0x0, 1
       monitor = DP-1, 2560x1440@165, 1920x0, 1
-      monitor = DP-2, 1920x1080@60, 4480x0, 1
+      monitor = DP-3, 1920x1080@60, 4480x0, 1
     '' else if hostName == "laptop" then ''
       monitor = eDP-1, 1920x1080@144, 0x0, 1
     '' else "";
@@ -39,18 +17,17 @@ let
       workspace = 4, monitor:HDMI-A-1, default:true
       workspace = 5, monitor:HDMI-A-1, default:false
       workspace = 6, monitor:HDMI-A-1, default:false
-      workspace = 7, monitor:DP-2, default:true
-      workspace = 8, monitor:DP-2, default:false
-      workspace = 9, monitor:DP-2, default:false
-
-      windowrulev2 = workspace 4,class:^(firefox)$
+      workspace = 7, monitor:DP-3, default:true
+      workspace = 8, monitor:DP-3, default:false
+      workspace = 9, monitor:DP-3, default:false
     '' else if hostName == "laptop" then ''
       workspace = 1, monitor:eDP-1, default:true
       workspace = 2, monitor:eDP-1, default:false
-      workspace = 3, monitor:eDP-1, default:falsed
+      workspace = 3, monitor:eDP-1, default:false
     '' else "";
   execonce = with host;
     if hostName == "desktop" then ''
+      exec-once = openrgb.sh
     '' else if hostName == "laptop" then ''
       exec-once = nm-applet
     '' else "";
@@ -61,6 +38,7 @@ in
 let
   hyprlandConf = with host; ''
     ${monitors}
+    monitor = Unknown-1, disabled
     monitor = , highres, auto, auto
 
     ${workspaces}
@@ -74,10 +52,16 @@ let
       sensitivity = ${sensitivity}
       accel_profile = flat
       follow_mouse = 1
-      ${touchpad}
+      touchpad {
+        natural_scroll = true
+        middle_button_emulation = true
+        tap-to-click = true
+      }
     }
 
-    ${gestures}
+    gestures {
+      workspace_swipe = true
+    }
 
     general {
       gaps_in = 5
@@ -89,7 +73,9 @@ let
     }
 
     cursor {
-      no_warps = true
+      no_warps = false
+      zoom_factor = 1
+      zoom_rigid = false
     }
 
     misc {
@@ -97,15 +83,14 @@ let
       disable_splash_rendering = true
       enable_swallow = true
       swallow_regex = ^(kitty)$
-      # TODO: uncomment once hyprland is new enough
-      # middle_click_paste = false
+      middle_click_paste = false
     }
 
     decoration {
       rounding = 8
 
       active_opacity = 1
-      inactive_opacity = 0.9
+      inactive_opacity = 1
       
       blur {
         enabled = true
@@ -122,11 +107,6 @@ let
       shadow_range = 10
       shadow_render_power = 5
       col.shadow = 0x66404040
-
-      blurls = bar-0
-      blurls = bar-1
-      blurls = bar-2
-      blurls = lockscreen
     }
 
     animations {
@@ -153,99 +133,65 @@ let
       preserve_split = true
     }
 
-    master {
-      new_is_master = true
-    }
-
-    #--VARIABLES --#
+    #-- VARIABLES --#
 
     $scriptsDir = ${vars.location}/files/scripts
 
-    $term = kitty
-    $wall = $scriptsDir/wall.sh
-    $audio = $scriptsDir/audio.sh
-    $alttab = $scriptsDir/alttab.sh
-    $record = $scriptsDir/record.sh
-    $launcher = $scriptsDir/launcher.sh
-    $screenshot = $scriptsDir/screenshot.sh
-    $brightness = $scriptsDir/brightness.sh
-    $colorpicker = $scriptsDir/colorpicker.sh
-    $randomchars = $scriptsDir/randomchars.sh
-    $xremap_toggle = $scriptsDir/xremap.sh toggle
-    $toggle_mute_active_window = $scriptsDir/toggle_mute_active_window.sh
-    $filemanager = $term yazi
-    $filemanagerroot = $term sudo YAZI_CONFIG_HOME=/home/${vars.user}/.config/yazi yazi
-    $browser = firefox
+    #-- STARTUP --#
 
-    #--STARTUP --#
+    env = HYPRCURSOR_SIZE,${toString config.home.pointerCursor.size}
+    env = HYPRCURSOR_THEME,Bibata-Modern-Classic-Hyprcursor
 
-    exec-once = exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+    exec-once = hyprctl setcursor Bibata-Modern-Classic-Hyprcursor ${toString config.home.pointerCursor.size}
     exec-once = ssh-add ${vars.secrets}/git-ssh-key
     exec-once = gpg --import ${vars.secrets}/git-gpg-key
-    exec-once = hyprpaper
-    exec-once = hypridle
-    exec-once = $browser
-    exec-once = ags
-    exec-once = mako
+    exec-once = [workspace 4 silent] firefox-developer-edition -P default
     exec-once = wl-paste --type text --watch cliphist store
     exec-once = wl-paste --type image --watch cliphist store
-    # exec-once = xwaylandvideobridge
-    exec-once = $brightness scan
-    exec-once = $brightness refresh
-    # xremap doesn't start by default for some reason
-    exec-once = systemctl --user start xremap
     exec-once = cliphist wipe
-    exec-once = vpn.sh connect
-    exec-once = loopback.sh
-    exec-once = ntfy.sh
+    # exec-once = vpn.sh connect
+    exec-once = start-ntfy.sh
     ${execonce}
 
-    #--KEYBINDS --#
+    #-- KEYBINDS --#
+
+    binds {
+      scroll_event_delay = 0
+    }
 
     # submap
     submap = reset
-
-    # Networking
-    bind = SUPER_SHIFT, Prior, exec, nmcli networking on
-    bind = SUPER_SHIFT, Next, exec, nmcli networking off
 
     # Audio Control
     bind = , XF86AudioPlay, exec, wnpcli play-pause
     bind = , XF86AudioPrev, exec, wnpcli skip-previous
     bind = , XF86AudioNext, exec, wnpcli skip-next
-    # bind = , XF86AudioRaiseVolume, exec, $audio sink set +5
-    # bind = , XF86AudioLowerVolume, exec, $audio sink set -5
     bind = , XF86AudioRaiseVolume, exec, wnpcli set-volume 2+
     bind = , XF86AudioLowerVolume, exec, wnpcli set-volume 2-
-    bind = , XF86AudioMute, exec, $audio sink toggle-mute
-    bind = SUPER, M, exec, $audio source toggle-mute --ping
-    bind = ALT, M, exec, $toggle_mute_active_window
-
-    # Alt Tab
-    bind = ALT, TAB, exec, $alttab
+    bind = , XF86AudioMute, exec, mpscd produce ags speaker-toggle
+    bind = SUPER, M, exec, mpscd produce ags mic-toggle
+    bind = ALT, M, exec, toggle-mute-active-window.sh
 
     # Screenshot & Recording
-    bind = , Print, exec, $screenshot
-    bind = SHIFT, Print, exec, $screenshot --satty
-    bind = CTRL, Print, exec, $record
-    bind = CTRL_SHIFT, Print, exec, $record --audio
-
-    # Brightness
-    bind = SUPER, Prior, exec, $brightness set 100
-    bind = SUPER, Next, exec, $brightness set 0
+    bind = , Print, exec, screenshot.sh
+    bind = SHIFT, Print, exec, screenshot.sh --satty
+    bind = CTRL, Print, exec, record.sh
+    bind = CTRL_SHIFT, Print, exec, record.sh --audio
 
     # Misc
-    bind = SUPER, W, exec, $wall
-    bind = CTRL_SHIFT, R, exec, $randomchars
-    bind = CTRL_SHIFT, SPACE, exec, $launcher
-    bind = CTRL_SHIFT, Escape, exec, $term btop
-    bind = SUPER, P, exec, $colorpicker
-    bind = SUPER, X, exec, $term
-    bind = SUPER, E, exec, $filemanager
-    bind = CTRL_SUPER, E, exec, $filemanagerroot
+    bind = SUPER, W, exec, hyprpaper-picker.sh
+    bind = CTRL_SHIFT, R, exec, type-randomchars.sh
+    bind = CTRL_SHIFT, SPACE, exec, mpscd produce ags launcher-toggle
+    bind = CTRL_SHIFT, Escape, exec, kitty btop
+    bind = SUPER, P, exec, hyprpicker.sh
+    bind = SUPER, X, exec, kitty
+    bind = SUPER, E, exec, kitty yazi
+    bind = CTRL_SUPER, E, exec, kitty sudo YAZI_CONFIG_HOME=/home/${vars.user}/.config/yazi yazi
     bind = SUPER, H, exec, cliphist list | wofi --dmenu --normal-window | cliphist decode | wl-copy
-    bind = SUPER, Q, exec, wlogout
-    bind = SUPER_ALT, X, exec, $xremap_toggle
+    bind = SUPER_ALT, X, exec, xremap-mouse.sh toggle
+    bind = SUPER_SHIFT, mouse_down, exec, hyprland-zoom.sh +.1
+    bind = SUPER_SHIFT, mouse_up, exec, hyprland-zoom.sh -.1
+    bind = SUPER_SHIFT, mouse:274, exec, hyprland-zoom.sh 1 # middle mouse button
 
     # Window Manager
     bind = SUPER, C, killactive,
@@ -309,15 +255,18 @@ let
 
     #--WINDOW RULES --#
 
+    # render ffxiv in background, fps is determined by misc:render_unfocused_fps which defaults to 15, same as ffxiv's default unfocused fps
+    windowrulev2 = renderunfocused,class:^(ffxiv_dx11.exe)$
+
     # Opacity
-    windowrulev2 = opacity 0.9 0.9,class:^(firefox)$
-    windowrulev2 = opacity 0.9 0.9,class:^(brave)$
-    windowrulev2 = opacity 0.9 0.9,class:^(.*code.*)$
+    # windowrulev2 = opacity 0.9 0.9,class:^(firefox)$
+    # windowrulev2 = opacity 0.9 0.9,class:^(brave)$
+    # windowrulev2 = opacity 0.9 0.9,class:^(.*code.*)$
     windowrulev2 = opacity 0.8 0.8,class:^(kitty)$
-    windowrulev2 = opacity 0.8 0.8,class:^(Steam)$
-    windowrulev2 = opacity 0.8 0.8,class:^(steam)$
-    windowrulev2 = opacity 0.8 0.8,class:^(steamwebhelper)$
-    windowrulev2 = opacity 0.8 0.7,class:^(pavucontrol)$
+    # windowrulev2 = opacity 0.8 0.8,class:^(Steam)$
+    # windowrulev2 = opacity 0.8 0.8,class:^(steam)$
+    # windowrulev2 = opacity 0.8 0.8,class:^(steamwebhelper)$
+    # windowrulev2 = opacity 0.8 0.7,class:^(pavucontrol)$
 
     # polkit
     windowrulev2 = float,class:^(polkit-gnome-authentication-agent-1)$
@@ -353,13 +302,6 @@ let
     windowrulev2 = noanim,title:^(.*Sharing Indicator.*)$
     windowrulev2 = noinitialfocus,title:^(.*Sharing Indicator.*)$
 
-    # Screenshot Overlay
-    windowrulev2 = monitor ${leftmost-monitor},class:^(screenshot-overlay)$
-    windowrulev2 = float,class:^(screenshot-overlay)$
-    windowrulev2 = noanim,class:^(screenshot-overlay)$
-    windowrulev2 = move 0 0, class:^(screenshot-overlay)$
-    windowrulev2 = size ${monitor-size},class:^(screenshot-overlay)$
-    
     windowrulev2 = stayfocused,class:^(swappy)$
     windowrulev2 = float,class:^(swappy)$
     windowrulev2 = center,class:^(swappy)$
@@ -397,26 +339,72 @@ let
     layerrule = noanim, ^(gtk-layer-shell)$
     layerrule = noanim, ^(hyprpicker)$
 
-    windowrulev2 = float,class:^(wlogout)$
-    windowrulev2 = move 0 0,class:^(wlogout)$
-    windowrulev2 = size 100%,class:^(wlogout)$
-    windowrulev2 = animation slide,class:^(wlogout)$
-
     # explorer.exe (wine)
     # windowrulev2 = float,class:^(.*explorer.exe.*)$
     # windowrulev2 = opacity 0,class:^(.*explorer.exe.*)$
     # windowrulev2 = noblur,class:^(.*explorer.exe.*)$
     # windowrulev2 = nofocus,class:^(.*explorer.exe.*)$
   '';
+  cursor = "Bibata-Modern-Classic-Hyprcursor";
+  cursorPackage = pkgs.callPackage ../../../../pkgs/bibata-hyprcursor {};
 in
 {
-  home.file.".config/hypr/hyprland.conf".text = hyprlandConf;
-  home.file.".config/hypr/hyprpaper.conf".text = ''
-    preload=/home/${vars.user}/wall.png
-    wallpaper=,/home/${vars.user}/wall.png
-    splash=false
+  wayland.windowManager.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    xwayland.enable = true;
+    systemd = {
+      enable = true;
+      variables = [ "--all" ];
+      extraCommands = [
+        "systemctl --user stop graphical-session.target"
+        "systemctl --user start hyprland-session.target"
+      ];
+    };
+    extraConfig = hyprlandConf;
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
+    ];
+    config.common.default = [ "hyprland" ];
+    config.hyprland.default = [ "gtk" "hyprland" ];
+    xdgOpenUsePortal = true;
+  };
+  
+  home.packages = with pkgs; [
+    # zoom
+    bc
+    # screenshot
+    grim
+    slurp
+    swappy
+    satty
+  ];
+
+  services.hyprpaper = {
+    enable = true;
+    package = inputs.hyprpaper.packages.${pkgs.system}.hyprpaper;
+    settings = {
+      splash = false;
+      preload = [
+        "/home/${vars.user}/wall.png"
+      ];
+      wallpaper = [
+        ",/home/${vars.user}/wall.png"
+      ];
+    };
+  };
+
+  home.file.".config/hypr/xdph.conf".text = ''
+    screencopy {
+      max_fps = 60
+      allow_token_by_default = true
+    }
   '';
-  home.file.".config/hypr/hypridle.conf".text = ''
-    # TODO
-  '';
+
+  xdg.dataFile."icons/${cursor}".source = "${cursorPackage}/share/icons/${cursor}";
 }

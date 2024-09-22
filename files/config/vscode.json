@@ -1,6 +1,6 @@
 {
   "search.followSymlinks": false,
-  "window.titleBarStyle": "custom", // NOTE: "native" does not cause crashes anymore, however, context menus are ruined if using "native"
+  "window.titleBarStyle": "custom",
   "zenMode.fullScreen": false,
   "keyboard.dispatch": "keyCode", // fixes wrong keyboard shortcut layout
   "editor.codeLens": true,
@@ -51,8 +51,9 @@
   "[rust]": { "editor.defaultFormatter": "rust-lang.rust-analyzer" },
   "[c]": { "editor.defaultFormatter": "xaver.clang-format" },
   "[cpp]": { "editor.defaultFormatter": "xaver.clang-format" },
-  /* For some reason this is needed to get intellisense to work for .css files */
   "files.associations": {
+    "vscode.json": "jsonc", // allow comments in vscode.json
+    /* For some reason this is needed to get intellisense to work for .css files */
     "*.css": "css",
     "css": "css"
   },
@@ -62,8 +63,7 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "**/types": true
+    "**/Thumbs.db": true
   },
   /* END editor settings */
   /* START git settings */

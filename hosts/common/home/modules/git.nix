@@ -12,6 +12,7 @@
     };
     extraConfig = {
       core.sshcommand = "ssh -i ${vars.secrets}/git-ssh-key";
+      core.autocrlf = "input";
       init.defaultBranch = "main";
       pull.rebase = false;
       url = {

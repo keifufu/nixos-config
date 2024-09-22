@@ -20,17 +20,17 @@ function connect_to_server() {
 
   cd "$piapath"
 
-  pia_credentials=$(cat "$NIXOS_SECRETS/pia_credentials")
+  pia_credentials=$(cat "$SNOWFLAKE_SECRETS/pia_credentials")
   sudo $pia_credentials VPN_PROTOCOL=wireguard PREFERRED_REGION="$1" ./get_region.sh
 
-  echo "$1" > "$NIXOS_SECRETS/.last_vpn_server"
+  echo "$1" > "$SNOWFLAKE_SECRETS/.last_vpn_server"
 
   cd "$SCRIPT_PATH"
 }
 
 if [[ "$1" == "connect" ]]; then
-  if [ -f "$NIXOS_SECRETS/.last_vpn_server" ]; then
-    server=$(cat "$NIXOS_SECRETS/.last_vpn_server")
+  if [ -f "$SNOWFLAKE_SECRETS/.last_vpn_server" ]; then
+    server=$(cat "$SNOWFLAKE_SECRETS/.last_vpn_server")
     connect_to_server "$server"
   else
     wg-quick up pia
@@ -48,7 +48,7 @@ elif [[ "$1" == "server" ]]; then
 elif [[ "$1" == "status" ]]; then
   if [[ "$2" == "--waybar" ]]; then
     res=$(sudo wg show pia)
-    server=$(cat "$NIXOS_SECRETS/.last_vpn_server")
+    server=$(cat "$SNOWFLAKE_SECRETS/.last_vpn_server")
     if [[ "$res" =~ "latest handshake" ]]; then
       icon=""
       class="on"

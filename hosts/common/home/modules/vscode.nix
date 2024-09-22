@@ -1,10 +1,14 @@
 { pkgs, ... }:
 
 {
+  home.packages = with pkgs; [
+    clang-tools # for clang-format
+  ];
+
   # Note: settings are symlinked in hosts/common/configuration/modules/symlink.nix
   programs.vscode = {
     enable = true;
-    # package = pkgs.vscodium; # try again once vscode wayland crash is fixed
+    package = pkgs.vscodium;
     extensions = with pkgs.vscode-extensions; [
       # streetsidesoftware.code-spell-checker
       serayuzgur.crates

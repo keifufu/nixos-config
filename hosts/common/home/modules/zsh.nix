@@ -1,12 +1,6 @@
 { pkgs, vars, ... }:
 
 {
-  programs.zoxide = {
-    enable = true;
-    enableZshIntegration = true;
-    options = [ "--cmd cd" ];
-  };
-
   programs.zsh = {
     enable = true;
     initExtra = ''
@@ -19,10 +13,11 @@
     '';
     shellAliases = {
       ls = "eza --all --icons --group-directories-first --no-permissions --octal-permissions --time-style long-iso";
-      rebuild = "sudo nixos-rebuild switch --flake ${vars.location}# --impure && reload.sh";
-      rebuild-trace = "sudo nixos-rebuild switch --flake ${vars.location}# --impure --show-trace --option eval-cache false && reload.sh";
+      rebuild = "sudo nixos-rebuild switch --flake ${vars.location}# && reload.sh";
+      rebuild-trace = "sudo nixos-rebuild switch --flake ${vars.location}# --show-trace --option eval-cache false && reload.sh";
       lsblk = "lsblk -o name,size,type,mountpoints,label";
       sudow = "sudo -EH";
+      code = "codium";
     };
     autosuggestion.enable = true;
     enableCompletion = true;

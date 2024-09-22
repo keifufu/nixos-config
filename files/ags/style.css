@@ -1,0 +1,19 @@
+window.bar {
+  background-color: @theme_bg_color;
+  color: @theme_fg_color;
+  font-size: 12px;
+}
+
+window.bar-large {
+  background-color: @theme_bg_color;
+  color: @theme_fg_color;
+  font-size: 16px;
+  padding: 10px 10px 10px 10px;
+}
+
+button {
+  /* min-width: 0; */
+  /* padding-top: 0; */
+  /* padding-bottom: 0; */
+  background-color: @theme_focus_color;
+}

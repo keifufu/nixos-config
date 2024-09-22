@@ -8,11 +8,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprpaper.url = "github:hyprwm/hyprpaper";
     xremap.url = "github:xremap/nix-flake";
     dimland.url = "github:keifufu/dimland";
     wnpcli.url = "github:keifufu/WebNowPlaying-CLI";
+    mpscd.url = "github:keifufu/mpscd";
     ags.url = "github:Aylur/ags";
     catppuccin.url = "github:catppuccin/nix";
+    xivlauncher-rb.url = "github:drakon64/nixos-xivlauncher-rb";
   };
 
   outputs = { nixpkgs, ... } @ inputs:

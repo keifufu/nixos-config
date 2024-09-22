@@ -1,9 +1,9 @@
+{ inputs, ... }:
+
 {
-  systemd.user.paths.hyprland-started = {
-    Unit.Description = "Watch for Hyprland to start";
-    Path.PathExists = "%t/hypr";
-    Install.WantedBy = [ "default.target" ];
-  };
+  imports = [
+    inputs.dimland.homeManagerModules.dimland
+  ];
 
   programs.dimland = {
     enable = true;
@@ -11,7 +11,8 @@
       enable = true;
       alpha = 0;
       radius = 20;
-      after = "hyprland-started.path";
+      after = "hyprland-session.target";
+      restartSec = "1s";
     };
   };
 }

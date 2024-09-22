@@ -5,14 +5,17 @@
     prismlauncher
     temurin-jre-bin-17
     lutris
-    mangohud
     wineWowPackages.wayland
+    winetricks
     protontricks
   ];
 
   programs = {
-    steam.enable = true;
-    gamemode.enable = true;
-    gamescope.enable = true;
+    steam = {
+      enable = true;
+      extraCompatPackages = [
+        pkgs.proton-ge-bin
+      ];
+    };
   };
 }

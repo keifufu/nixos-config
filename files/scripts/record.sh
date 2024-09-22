@@ -5,8 +5,8 @@ if [ -z "$XDG_CACHE_HOME" ]; then
   exit 1
 fi
 
-if [ -z "$NIXOS_SCREENSHOTDIR" ]; then
-  echo "Environment variable NIXOS_SCREENSHOTDIR is missing"
+if [ -z "$SNOWFLAKE_SCREENSHOTDIR" ]; then
+  echo "Environment variable SNOWFLAKE_SCREENSHOTDIR is missing"
   exit 1
 fi
 
@@ -17,12 +17,13 @@ if [ "$1" == "status" ]; then
   exit 0
 fi
 
-OUTPATH="$NIXOS_SCREENSHOTDIR/videos"
-VIDEOPATH="$OUTPATH/$(date '+%Y-%m-%dT%H-%M-%S.mp4')"
+OUTPATH="$SNOWFLAKE_SCREENSHOTDIR/videos"
+VIDEOPATH="$OUTPATH/in-progress.mp4"
+FINAL_VIDEOPATH="$OUTPATH/$(date '+%Y-%m-%dT%H-%M-%S.mp4')"
 THUMBNAIL="$XDG_CACHE_HOME/.recording-thumbnail.png"
 
 if [[ ! -d "$OUTPATH" ]]; then
-  notify-send -u critical "$NIXOS_SCREENSHOTDIR inaccessible or $NIXOS_SCREENSHOTDIR/videos missing"
+  notify-send -u critical "$SNOWFLAKE_SCREENSHOTDIR inaccessible or $SNOWFLAKE_SCREENSHOTDIR/videos missing"
   exit 1
 fi
 
@@ -36,12 +37,16 @@ if pgrep -x "wf-recorder" > /dev/null; then
     sleep 0.1
   done
 
-  ffmpeg -y -i "$VIDEOPATH" -ss 00:00:01 -vframes 1 "$THUMBNAIL"
+  mv "$VIDEOPATH" "$FINAL_VIDEOPATH"
 
-  wl-copy < "$VIDEOPATH"
+  ffmpeg -y -i "$FINAL_VIDEOPATH" -ss 00:00:01 -vframes 1 "$THUMBNAIL"
+
+  wl-copy -p < "$FINAL_VIDEOPATH"
   notify-send -t 5000 -r $id -i $THUMBNAIL "Done recording"
 elif [ "$1" == "--audio" ]; then
-  wf-recorder -x yuv420p --audio="$(pactl get-default-sink).monitor" -g "$(slurp -b "#cad3f533" -c "#ffffffff" -d)" -f $TMPVIDEO <<<Y
+  id=$(notify-send -t 0 "Recording..." --print-id)
+  echo $id > "$XDG_CACHE_HOME/.recording-id"
+  wf-recorder -x yuv420p --audio="$(pactl get-default-sink).monitor" -g "$(slurp -b "#cad3f533" -c "#ffffffff" -d)" -f $VIDEOPATH <<<Y
 else
   # "-x yuv420p" see https://github.com/ammen99/wf-recorder/issues/218#issuecomment-1710702237
   id=$(notify-send -t 0 "Recording..." --print-id)

@@ -10,14 +10,12 @@
     ./modules/hyprland.nix
     ./modules/kitty.nix
     ./modules/mako.nix
-    ./modules/neofetch.nix
+    ./modules/mpscd.nix
     ./modules/obs-studio.nix
     ./modules/rnnoise.nix
     ./modules/wofi.nix
-    ./modules/swaylock.nix
     ./modules/theming.nix
     ./modules/vscode.nix
-    ./modules/wlogout.nix
     ./modules/wnpcli.nix
     ./modules/xremap.nix
     ./modules/yazi.nix
@@ -25,15 +23,10 @@
   ];
 
   xdg.enable = true;
-  catppuccin = {
-    flavor = "mocha";
-    accent = "mauve";
-  };
 
   home = {
     username = "${vars.user}";
     homeDirectory = "/home/${vars.user}";
-
     stateVersion = "23.11";
   };
 

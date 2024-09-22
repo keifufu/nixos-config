@@ -64,8 +64,8 @@
   environment = {
     variables = {
       NIXOS_ALLOW_UNFREE = "1";
-      NIXOS_SECRETS = "${vars.secrets}";
-      NIXOS_FILES = "${vars.location}/files";
+      SNOWFLAKE_SECRETS = "${vars.secrets}";
+      SNOWFLAKE_FILES = "${vars.location}/files";
       PATH = [
         "${vars.location}/files/scripts"
       ];

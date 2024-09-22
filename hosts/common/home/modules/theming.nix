@@ -1,32 +1,45 @@
-{ lib, pkgs, ... }:
+{ inputs, lib, pkgs, ... }:
 
 {
+  imports = [
+    inputs.catppuccin.homeManagerModules.catppuccin
+  ];
+
+  catppuccin = {
+    flavor = "mocha";
+    accent = "mauve";
+  };
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 18;
+  };
+
   gtk = {
     enable = true;
-    catppuccin.enable = true;
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.catppuccin-papirus-folders.override {
-        flavor = "mocha";
-        accent = "mauve";
+    font.name = "FiraCode Nerd Font Mono Medium";
+    theme = {
+      name = "Catppuccin-GTK-Purple-Dark-Compact";
+      package = pkgs.magnetic-catppuccin-gtk.override {
+        accent = [ "purple" ];
+        shade = "dark";
+        size = "compact";
       };
     };
-    font = {
-      name = "FiraCode Nerd Font Mono Medium";
+    iconTheme = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
     };
   };
 
   home.packages = with pkgs; [
     libsForQt5.qt5ct
     qt6Packages.qt6ct
+    dart-sass
   ];
-
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.catppuccin-cursors.mochaDark;
-    name = "Catppuccin-Mocha-Dark-Cursors";
-    size = 16;
-  };
 
   xdg.configFile."kdeglobals".source = "${(pkgs.catppuccin-kde.override {
     flavour = ["mocha"];
