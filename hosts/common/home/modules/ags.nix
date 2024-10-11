@@ -22,12 +22,16 @@
       Description = "ags";
       After = [ "hyprland-session.target" ];
       Requires = [ "dimland.service" ];
+      StartLimitBurst = 15;
+      StartLimitIntervaSec = 60;
     };
     Service = {
+      Type = "simple";
       ExecStart = "${config.programs.ags.package}/bin/ags --config ${vars.location}/files/ags/config.js";
       Restart = "always";
       RestartSec = "1s";
+      KillMode = "process";
     };
-    Install.WantedBy = [ "hyprland-session.target" ];
+    Install.WantedBy = [ "default.target" ];
   };
 }

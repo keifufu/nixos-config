@@ -7,6 +7,6 @@
     package = pkgs.btop.override {
       rocmSupport = true;
     };
-    extraConfig = "custom_gpu_name0 = \"AMD Radeon 7900XT\"";
+    extraConfig = "custom_gpu_name0 = \"AMD Radeon RX 7900 XT\"";
   };
 }

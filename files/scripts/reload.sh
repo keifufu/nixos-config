@@ -1,6 +1,8 @@
 #/usr/bin/env bash
 
-# TODO: remove this temporary fix for https://github.com/Aylur/ags/issues/444
+# ags service has KillMode=process because otherwise
+# it'd kill processes launched by the launcher too.
+# this is hacky but it works
 pkill -f "^wnpcli metadata -f"
 pkill -f "^mpscd consume ags"
 systemctl restart --user ags.service

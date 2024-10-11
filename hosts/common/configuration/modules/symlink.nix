@@ -12,6 +12,10 @@
       rm -rf $HOME/.mozilla
       ln -s "${vars.symlink}/.mozilla" "$HOME/.mozilla"
     fi
+    if [[ ! -h "$HOME/.zen" ]]; then
+      rm -rf $HOME/.zen
+      ln -s "${vars.symlink}/.zen" "$HOME/.zen"
+    fi
     if [[ ! -h "$HOME/Downloads" ]]; then
       rm -rf $HOME/Downloads
       ln -s "${vars.symlink}/Downloads" "$HOME/Downloads"
@@ -39,6 +43,10 @@
     if [[ ! -h "$HOME/.local/share/PrismLauncher" ]]; then
       rm -rf $HOME/.local/share/PrismLauncher
       ln -s "${vars.symlink}/PrismLauncher" "$HOME/.local/share/PrismLauncher"
+    fi
+    if [[ ! -h "$HOME/.local/share/fonts" ]]; then
+      rm -rf $HOME/.local/share/fonts
+      ln -s "${vars.symlink}/fonts" "$HOME/.local/share/fonts"
     fi
   '';
 }

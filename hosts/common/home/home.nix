@@ -19,6 +19,7 @@
     ./modules/wnpcli.nix
     ./modules/xremap.nix
     ./modules/yazi.nix
+    ./modules/zen.nix
     ./modules/zsh.nix
   ];
 

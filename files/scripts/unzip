@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+archive_path="$@"
+
+if [[ -e "$archive_path" ]]; then
+    archive_name=$(basename "$archive_path")
+    archive_dir="${archive_name%.*}"
+    archive_dir_path=$(dirname "$archive_path")
+    mkdir -p "$archive_dir_path/$archive_dir"
+
+    case "$archive_name" in
+      *.tar.gz)
+        tar -xf "$archive_path" -C "$archive_dir_path/$archive_dir"
+        ;;
+      *)
+        7z x "$archive_path" -o"$archive_dir_path/$archive_dir" -y
+      ;;
+    esac
+else
+    echo "Error: Archive path does not exist."
+    exit 1
+fi

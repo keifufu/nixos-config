@@ -54,41 +54,41 @@
     #   };
     # };
 
-    extraConfig.pipewire."99-low-latency" = {
-      context = {
-        properties.default.clock.min-quantum = 128;
-        modules = [
-          {
-            name = "libpipewire-module-rtkit";
-            flags = ["ifexists" "nofail"];
-            args = {
-              nice.level = -15;
-              rt = {
-                prio = 88;
-                time.soft = 200000;
-                time.hard = 200000;
-              };
-            };
-          }
-          {
-            name = "libpipewire-module-protocol-pulse";
-            args = {
-              server.address = ["unix:native"];
-              pulse.min = {
-                req = "128/48000";
-                quantum = "128/48000";
-                frag = "128/48000";
-              };
-            };
-          }
-        ];
+    # extraConfig.pipewire."99-low-latency" = {
+    #   context = {
+    #     properties.default.clock.min-quantum = 128;
+    #     modules = [
+    #       {
+    #         name = "libpipewire-module-rtkit";
+    #         flags = ["ifexists" "nofail"];
+    #         args = {
+    #           nice.level = -15;
+    #           rt = {
+    #             prio = 88;
+    #             time.soft = 200000;
+    #             time.hard = 200000;
+    #           };
+    #         };
+    #       }
+    #       {
+    #         name = "libpipewire-module-protocol-pulse";
+    #         args = {
+    #           server.address = ["unix:native"];
+    #           pulse.min = {
+    #             req = "128/48000";
+    #             quantum = "128/48000";
+    #             frag = "128/48000";
+    #           };
+    #         };
+    #       }
+    #     ];
 
-        stream.properties = {
-          node.latency = 128;
-          resample.quality = 1;
-        };
-      };
-    };
+    #     stream.properties = {
+    #       node.latency = 128;
+    #       resample.quality = 1;
+    #     };
+    #   };
+    # };
 
     # extraConfig.pipewire-pulse."99-low-latency" = {
     #   context.modules = [
@@ -189,7 +189,9 @@
       eza
       libnotify
       ntfy-sh
-      mpv
+      (mpv.override {
+        scripts = [ mpvScripts.mpris ];
+      })
       krita
       networkmanagerapplet
       imagemagick
@@ -215,6 +217,7 @@
       pulseaudio # just for pactl
       helvum
       firefox-devedition-bin
+      ungoogled-chromium
       brave
       transmission_4-gtk
       cryptsetup
@@ -224,6 +227,8 @@
       remmina
       telegram-desktop
       teamspeak_client
+      parsec-bin
+      lact
       (inputs.xivlauncher-rb.packages.${pkgs.stdenv.hostPlatform.system}.xivlauncher-rb.override {
         useGameMode = true;
         steam = pkgs.steam.override {
@@ -233,6 +238,16 @@
         };
       })
     ];
+  };
+
+  systemd.services.lact = {
+    description = "AMDGPU Control Daemon";
+    after = ["multi-user.target"];
+    wantedBy = ["multi-user.target"];
+    serviceConfig = {
+      ExecStart = "${pkgs.lact}/bin/lact daemon";
+    };
+    enable = true;
   };
 
   xdg.mime = {
@@ -447,11 +462,11 @@
           "text/x-c++"
         ];
       in
-      (lib.genAttrs code (_: [ "codium.desktop" ]))
-      // (lib.genAttrs images (_: [ "firefox-developer-edition.desktop" ]))
-      // (lib.genAttrs urls (_: [ "firefox-developer-edition.desktop" ]))
-      // (lib.genAttrs documents (_: [ "firefox-developer-edition.desktop" ]))
-      // (lib.genAttrs audioVideo (_: [ "firefox-developer-edition.desktop" ]));
+      (lib.genAttrs code (_: [ "codium" ]))
+      // (lib.genAttrs images (_: [ "zen-browser" ]))
+      // (lib.genAttrs urls (_: [ "zen-browser" ]))
+      // (lib.genAttrs documents (_: [ "zen-browser" ]))
+      // (lib.genAttrs audioVideo (_: [ "zen-browser" ]));
   };
 
   services.fstrim.enable = true;

@@ -7,7 +7,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland.url = "github:hyprwm/hyprland";
     hyprpaper.url = "github:hyprwm/hyprpaper";
     xremap.url = "github:xremap/nix-flake";
     dimland.url = "github:keifufu/dimland";
@@ -16,6 +16,7 @@
     ags.url = "github:Aylur/ags";
     catppuccin.url = "github:catppuccin/nix";
     xivlauncher-rb.url = "github:drakon64/nixos-xivlauncher-rb";
+    zen-browser.url = "github:fufexan/zen-browser-flake";
   };
 
   outputs = { nixpkgs, ... } @ inputs:

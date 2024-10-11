@@ -4,6 +4,7 @@
     catppuccin.enable = true;
     extraConfig = ''
       confirm_os_window_close 0
+      enable_audio_bell no
       # Don't intercept the following key strokes to make zsh-shift-select work.
       map ctrl+shift+left no_op
       map ctrl+shift+right no_op

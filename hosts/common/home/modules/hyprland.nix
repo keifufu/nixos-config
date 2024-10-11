@@ -35,6 +35,15 @@ let
   sensitivity = with host;
     if hostName == "desktop" then "0.5"
     else "0.25";
+  # Note: though my desktop does not have a touchpad, this fucks with mouse input.
+  touchpad = with host;
+    if hostName == "laptop" then ''
+      touchpad {
+        natural_scroll = true
+        middle_button_emulation = true
+        tap-to-click = true
+      }
+    '' else "";
 in
 let
   hyprlandConf = with host; ''
@@ -48,16 +57,12 @@ let
       kb_layout = de
       kb_variant = nodeadkeys
       kb_model = pc105
-      kb_options = 
+      kb_options = caps:ctrl_modifier
       kb_rules = 
       sensitivity = ${sensitivity}
       accel_profile = flat
       follow_mouse = 1
-      touchpad {
-        natural_scroll = true
-        middle_button_emulation = true
-        tap-to-click = true
-      }
+      ${touchpad}
     }
 
     gestures {
@@ -146,7 +151,7 @@ let
     exec-once = hyprctl setcursor Bibata-Modern-Classic-Hyprcursor ${toString config.home.pointerCursor.size}
     exec-once = ssh-add ${vars.secrets}/git-ssh-key
     exec-once = gpg --import ${vars.secrets}/git-gpg-key
-    exec-once = [workspace 4 silent] firefox-developer-edition -P default
+    exec-once = [workspace 4 silent] zen
     exec-once = wl-paste --type text --watch cliphist store
     exec-once = wl-paste --type image --watch cliphist store
     exec-once = cliphist wipe
@@ -199,10 +204,7 @@ let
     # bind = SUPER_SHIFT, Q, exit,
     bind = SUPER, F, fullscreen,
     bind = SUPER, V, togglefloating,
-    bind = SUPER, P, pseudo, # dwindle
     bind = SUPER, S, togglesplit, # dwindle
-    bind = SUPER, Tab, cyclenext,
-    bind = SUPER, Tab, bringactivetotop,
 
     # Focus
     bind = SUPER, left, movefocus, l
@@ -295,13 +297,20 @@ let
     windowrulev2 = float,title:^(Confirm to replace files)$
     windowrulev2 = float,title:^(File Operation Progress)$
 
+    windowrulev2 = float, title:^(Picture-in-Picture)$
+    windowrulev2 = pin, title:^(Picture-in-Picture)$
+
+    windowrulev2 = workspace special silent, title:^(Firefox — Sharing Indicator)$
+    windowrulev2 = workspace special silent, title:^(Zen — Sharing Indicator)$
+    windowrulev2 = workspace special silent, title:^(.*is sharing (your screen|a window)\.)$
+
     # Fuck "Sharing Indicator" window
-    windowrulev2 = float,title:^(.*Sharing Indicator.*)$
-    windowrulev2 = opacity 0,title:^(.*Sharing Indicator.*)$
-    windowrulev2 = noblur,title:^(.*Sharing Indicator.*)$
-    windowrulev2 = nofocus,title:^(.*Sharing Indicator.*)$
-    windowrulev2 = noanim,title:^(.*Sharing Indicator.*)$
-    windowrulev2 = noinitialfocus,title:^(.*Sharing Indicator.*)$
+    # windowrulev2 = float,title:^(.*Sharing Indicator.*)$
+    # windowrulev2 = opacity 0,title:^(.*Sharing Indicator.*)$
+    # windowrulev2 = noblur,title:^(.*Sharing Indicator.*)$
+    # windowrulev2 = nofocus,title:^(.*Sharing Indicator.*)$
+    # windowrulev2 = noanim,title:^(.*Sharing Indicator.*)$
+    # windowrulev2 = noinitialfocus,title:^(.*Sharing Indicator.*)$
 
     windowrulev2 = stayfocused,class:^(swappy)$
     windowrulev2 = float,class:^(swappy)$
@@ -325,7 +334,7 @@ let
     windowrulev2 = size 800 600,class:^(Volume Control)$
 
     windowrulev2 = idleinhibit focus,class:^(mpv)$
-    windowrulev2 = idleinhibit fullscreen,class:^(firefox)$
+    windowrulev2 = idleinhibit fullscreen,class:^(zen)$
     windowrulev2 = idleinhibit fullscreen,class:^(brave)$
     windowrulev2 = idleinhibit fullscreen,class:^(.*Minecraft.*)$
 
@@ -339,12 +348,6 @@ let
 
     layerrule = noanim, ^(gtk-layer-shell)$
     layerrule = noanim, ^(hyprpicker)$
-
-    # explorer.exe (wine)
-    # windowrulev2 = float,class:^(.*explorer.exe.*)$
-    # windowrulev2 = opacity 0,class:^(.*explorer.exe.*)$
-    # windowrulev2 = noblur,class:^(.*explorer.exe.*)$
-    # windowrulev2 = nofocus,class:^(.*explorer.exe.*)$
   '';
   cursor = "Bibata-Modern-Classic-Hyprcursor";
   cursorPackage = pkgs.callPackage ../../../../pkgs/bibata-hyprcursor {};

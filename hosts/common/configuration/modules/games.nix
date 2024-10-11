@@ -5,9 +5,6 @@
     prismlauncher
     temurin-jre-bin-17
     lutris
-    wineWowPackages.wayland
-    winetricks
-    protontricks
   ];
 
   programs = {

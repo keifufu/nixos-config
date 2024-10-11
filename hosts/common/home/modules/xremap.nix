@@ -22,9 +22,6 @@ let
           Ctrl_L-ALT_L-Key_Minus: Alt_R-Key_Minus            # \
           Ctrl_L-ALT_L-Key_RightBrace: Alt_R-Key_RightBrace  # ~
           Ctrl_L-ALT_L-Key_102ND: Alt_R-Key_102ND            # |
-      - name: DisableCapsLock
-        remap:
-          CAPSLOCK: { escape_next_key: true }
   '' ;
 in
 {

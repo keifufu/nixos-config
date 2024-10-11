@@ -3,6 +3,9 @@
 {
   home.packages = with pkgs; [
     clang-tools # for clang-format
+    pnpm
+    nodejs
+    zip
   ];
 
   # Note: settings are symlinked in hosts/common/configuration/modules/symlink.nix
@@ -35,6 +38,23 @@
         version = "2.0.2";
         sha256 = "sha256-GiSS9gCCmOfsBrzahJe89DfyFyJJhQ8tkXVJbfibHQY=";
       }
+      {
+        name = "BongoCat";
+        publisher = "pixl-garden";
+        version = "0.0.1";
+        sha256 = "sha256-AyFDJZojea8jmCujhLgKVYdLBKSAdbHKc+83j8KRCwU=";
+      }
+      {
+        name = "lazygit";
+        publisher = "ChaitanyaShahare";
+        version = "1.0.6";
+        sha256 = "sha256-XijRju6mS3spdFPay0odb9G9EJKawyZwzvTuDWjIQFg=";
+      }
     ];
+  };
+
+  programs.lazygit = {
+    enable = true;
+    settings = {};
   };
 }

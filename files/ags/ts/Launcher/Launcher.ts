@@ -1,4 +1,6 @@
 const { query } = await Service.import("applications");
+import Gio from "gi://Gio";
+import GLib from "gi://GLib";
 import { globalState } from "ts/main";
 import { Application } from "types/service/applications";
 const WINDOW_NAME = "launcher";
@@ -94,6 +96,9 @@ function _Launcher({ width = 500, height = 500, spacing = 12 }) {
         if (windowName !== WINDOW_NAME) {
           return;
         }
+
+        // TODO: actually STEAL focus from games
+        // but its a LAYER, ugh.
 
         if (visible) {
           repopulate();
