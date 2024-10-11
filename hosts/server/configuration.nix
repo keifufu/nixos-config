@@ -18,10 +18,12 @@
     ];
   };
 
+  virtualisation.docker.enable = true;
+
   networking.firewall = {
     enable = true;
-    # http https smb
-    allowedTCPPorts = [ 80 443 445 ];
+    # nfs
+    allowedTCPPorts = [ 2049 ];
   };
 
   services.openssh = {
@@ -34,31 +36,69 @@
       type = "rsa";
     }];
   };
-  
-  virtualisation.docker.enable = true;
 
-  services.samba = {
+  services.cloudflared = {
     enable = true;
-    securityType = "user";
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = Samba (NixOS)
-      security = user
-      guest account = nobody
-      map to guest = bad user
-    '';
-    shares = {
-      data = {
-        path = "/data/data";
-        writeable = "yes";
-        "guest ok" = "no";
-        "force user" = "${vars.user}";
-        "force group" = "users";
-        "force create mode" = "0775";
-        "force directory mode" = "0775";
-        "inherit permissions" = "yes";
+    user = "${vars.user}";
+    group = "users";
+    tunnels = {
+      "nixos" = {
+        credentialsFile = "/data/services/cloudflared/nixos.json";
+        default = "http_status:404";
+        ingress = {
+          "navidrome.keifufu.dev" = "http://localhost:4533";
+          "vault.keifufu.dev" = "http://localhost:8222";
+          "keifufu.dev" = "http://localhost:80";
+          "www.keifufu.dev" = "http://localhost:80";
+          "homu.dev" = "http://localhost:80";
+          "www.homu.dev" = "http://localhost:80";
+        };
       };
     };
+  };
+
+  services.navidrome = {
+    enable = true;
+    user = "${vars.user}";
+    group = "users";
+    settings = {
+      MusicFolder = "/data/nfs/music";
+      DataFolder = "/data/services/navidrome";
+    };
+  };
+
+  systemd.services.vaultwarden = {
+    after = [ "network.target" ];
+    path = with pkgs; [ openssl ];
+    serviceConfig = {
+      User = "${vars.user}";
+      Group = "users";
+      EnvironmentFile = pkgs.writeText "vaultwarden.env" ''
+        WEB_VAULT_FOLDER=${pkgs.vaultwarden.webvault}/share/vaultwarden/vault
+        DATA_FOLDER=/data/services/vaultwarden
+        DOMAIN=https://vault.keifufu.dev
+        ROCKET_PORT=8222
+        SIGNUPS_ALLOWED=false
+      '';
+      ExecStart = "${pkgs.vaultwarden}/bin/vaultwarden";
+      Restart = "always";
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
+
+  services.nginx = {
+    enable = true;
+    user = "${vars.user}";
+    group = "users";
+    virtualHosts."keifufu.dev".root = "/data/services/nginx";
+    virtualHosts."homu.dev".root = "/data/services/nginx";
+  };
+
+  services.nfs.server = {
+    enable = true;
+    exports = ''
+      /data/nfs 192.168.2.0/24(rw,sync)
+    '';
   };
 
   environment = {
@@ -81,6 +121,7 @@
       hdparm
       pv
       nvme-cli
+      cloudflared
     ];
   };
 
@@ -103,5 +144,5 @@
   };
 
   nixpkgs.config.allowUnfree = true;
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.11";
 }

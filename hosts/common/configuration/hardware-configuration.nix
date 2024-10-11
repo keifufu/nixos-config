@@ -1,12 +1,12 @@
 { config, lib, pkgs, vars, ... }:
 
 let
-  getSambaHost = path: fallback:
+  getNfsHost = path: fallback:
     if lib.pathExists path then
       builtins.readFile path
     else
       fallback;
-  smb-host = getSambaHost "${vars.secrets}/smb_host" "192.168.2.111";
+  nfs-host = getNfsHost "${vars.secrets}/nfs_host" "192.168.2.111";
 in
 {
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
@@ -63,14 +63,10 @@ in
     fsType = "ext4";
   };
 
-  fileSystems."/smb" =
-    {
-      device = "//${smb-host}/data";
-      fsType = "cifs";
-      options = let
-        automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-      in [ "${automount_opts},credentials=${vars.secrets}/smb,uid=1000,gid=100" ];
-    };
+  fileSystems."/nfs" = {
+    device = "${nfs-host}:/data/nfs";
+    fsType = "nfs";
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

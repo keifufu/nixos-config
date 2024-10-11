@@ -7,7 +7,7 @@ function help() {
 }
 
 function test_server_connection() {
-  if [[ ! -d "/smb/other" ]]; then
+  if [[ ! -d "/nfs/other" ]]; then
     echo "Unable to connect to server"
     exit 1;
   fi
@@ -15,7 +15,7 @@ function test_server_connection() {
 
 function create_init() {
   test_server_connection
-  local dest="/smb/.backup"
+  local dest="/nfs/.backup"
 
   if [[ -d "$dest" ]]; then
     echo "Deleting old backup data"
@@ -48,7 +48,7 @@ function create_desktop() {
     echo "wtf? where /stuff?"
     exit 1
   fi
-  local dest="/smb/.backup"
+  local dest="/nfs/.backup"
   local ssh_dest="keifufu@192.168.2.111:/data/data/.backup"
 
   local excluded_desktop=("/.Trash-1000" "/lost+found" "/games" "/SteamLibrary" "/.pnpm-store" "wineprefix")
@@ -64,7 +64,7 @@ function create_usb() {
     echo "Mount /usb to continue"
     exit 1
   fi
-  local dest="/smb/.backup"
+  local dest="/nfs/.backup"
   local ssh_dest="keifufu@192.168.2.111:/data/data/.backup"
 
   local excluded_usb=("/.Trash-1000" "/lost+found")

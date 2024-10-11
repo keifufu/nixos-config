@@ -26,8 +26,8 @@
         location = "/home/keifufu/.snowflake";
         symlink = "/stuff/symlink";
         secrets = "/stuff/secrets";
-        walldir = "/smb/pictures/other/wallpapers";
-        screenshotdir = "/smb/pictures/screenshots";
+        walldir = "/nfs/pictures/other/wallpapers";
+        screenshotdir = "/nfs/pictures/screenshots";
       };
       system = "x86_64-linux";
       pkgs = import nixpkgs {

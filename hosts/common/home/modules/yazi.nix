@@ -109,9 +109,9 @@
         { on = [ "g" "d" ];       run = "cd ~/Downloads";   desc = "Go to the downloads directory"; }
         { on = [ "g" "s" ];       run = "cd /stuff";        desc = "Go to the stuff directory"; }
         { on = [ "g" "c" ];       run = "cd /stuff/code";   desc = "Go to the code directory"; }
-        { on = [ "g" "S" ];       run = "cd /smb";          desc = "Go to the smb directory"; }
-        { on = [ "g" "p" ];       run = "cd /smb/pictures"; desc = "Go to the pictures directory"; }
-        { on = [ "g" "o" ];       run = "cd /smb/others";   desc = "Go to the others directory"; }
+        { on = [ "g" "n" ];       run = "cd /nfs";          desc = "Go to the nfs directory"; }
+        { on = [ "g" "p" ];       run = "cd /nfs/pictures"; desc = "Go to the pictures directory"; }
+        { on = [ "g" "o" ];       run = "cd /nfs/others";   desc = "Go to the others directory"; }
         { on = [ "g" "<Space>" ]; run = "cd --interactive"; desc = "Go to a directory interactively"; }
       ];
       tasks.keymap = [

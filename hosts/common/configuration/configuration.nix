@@ -33,7 +33,6 @@
     extraHosts = ''
       192.168.2.1 speedport.ip
       192.168.2.2 asus.router
-      192.168.2.111 n.k.d
     '';
   };
 
@@ -517,5 +516,5 @@
   };
 
   nixpkgs.config.allowUnfree = true;
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.11";
 }
