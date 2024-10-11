@@ -52,6 +52,7 @@
           "www.keifufu.dev" = "http://localhost:80";
           "homu.dev" = "http://localhost:80";
           "www.homu.dev" = "http://localhost:80";
+          "homu.homu.dev" = "http://localhost:80";
         };
       };
     };
