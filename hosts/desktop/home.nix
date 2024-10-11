@@ -4,10 +4,10 @@
   home.packages = [
     (pkgs.appimageTools.wrapType2 rec {
       pname = "osu-lazer-bin";
-      version = "2024.906.2";
+      version = "2024.1009.1";
       src = pkgs.fetchurl {
         url = "https://github.com/ppy/osu/releases/download/${version}/osu.AppImage";
-        hash = "sha256-zQnR3KwlE1gTWH8f+GDRBsc7Whfn9XpT1D/NLg5TtrU=";
+        hash = "sha256-2H2SPcUm/H/0D9BqBiTFvaCwd0c14/r+oWhyeZdNpoU=";
       };
       extraPkgs = pkgs: with pkgs; [ icu ];
       extraInstallCommands =
