@@ -48,6 +48,7 @@
         ingress = {
           "navidrome.keifufu.dev" = "http://localhost:4533";
           "vault.keifufu.dev" = "http://localhost:8222";
+          "ssh.keifufu.dev" = "ssh://localhost:22";
           "keifufu.dev" = "http://localhost:80";
           "www.keifufu.dev" = "http://localhost:80";
           "homu.dev" = "http://localhost:80";

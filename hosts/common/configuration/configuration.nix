@@ -228,6 +228,7 @@
       teamspeak_client
       parsec-bin
       lact
+      cloudflared
       (inputs.xivlauncher-rb.packages.${pkgs.stdenv.hostPlatform.system}.xivlauncher-rb.override {
         useGameMode = true;
         steam = pkgs.steam.override {
